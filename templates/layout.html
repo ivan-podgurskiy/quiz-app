@@ -1,0 +1,253 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{block "title" .}}Quiz App{{end}}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e1e4e8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #58a6ff;
+      letter-spacing: -0.5px;
+    }
+
+    header a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #f0f6fc;
+    }
+
+    h3 {
+      font-size: 1rem;
+      color: #8b949e;
+      margin-bottom: 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+      margin-right: 0.5rem;
+      accent-color: #58a6ff;
+    }
+
+    select, input[type="number"] {
+      background: #0d1117;
+      color: #e1e4e8;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.95rem;
+      width: 100%;
+      max-width: 220px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.55rem 1.4rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-primary {
+      background: #238636;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #2ea043; }
+
+    .btn-secondary {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+    }
+    .btn-secondary:hover { background: #30363d; }
+
+    .btn-danger {
+      background: #da3633;
+      color: #fff;
+    }
+
+    .progress-bar-wrap {
+      background: #21262d;
+      border-radius: 4px;
+      height: 8px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #58a6ff;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-correct   { background: #1a7f37; color: #aff5b4; }
+    .badge-wrong     { background: #6e1a1a; color: #ffa198; }
+    .badge-beginner  { background: #1c5d3a; color: #56d364; }
+    .badge-intermediate { background: #4a3000; color: #e3b341; }
+    .badge-advanced  { background: #4a0000; color: #ff7b72; }
+
+    .option-row {
+      display: block;
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      margin-bottom: 0.4rem;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      transition: border-color 0.1s;
+      cursor: pointer;
+    }
+    .option-row:hover { border-color: #58a6ff; }
+    .option-row.correct   { border-color: #238636; background: #0d2a15; }
+    .option-row.wrong     { border-color: #da3633; background: #2a0d0d; }
+    .option-row.highlight { border-color: #1158a7; background: #0d1f3a; }
+
+    pre code.hljs {
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    .explanation-box {
+      background: #1c2128;
+      border-left: 3px solid #58a6ff;
+      padding: 0.8rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin-top: 1rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #c9d1d9;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #c9d1d9;
+      margin-bottom: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.55rem 0.8rem;
+      border: 1px solid #30363d;
+      text-align: left;
+    }
+
+    th {
+      background: #21262d;
+      color: #8b949e;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) { background: #0d1117; }
+
+    .score-big {
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+
+    .score-big.pass  { color: #56d364; }
+    .score-big.fail  { color: #ff7b72; }
+
+    .tag {
+      display: inline-block;
+      background: #1c2128;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 0.1rem 0.45rem;
+      font-size: 0.75rem;
+      color: #8b949e;
+      margin: 0 0.2rem 0.2rem 0;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: #484f58;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><a href="/">⚡ Quiz App</a></h1>
+    </header>
+    {{block "content" .}}{{end}}
+    <footer>Quiz App — spaced repetition for developers</footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/elixir.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
+{{end}}

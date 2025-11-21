@@ -1,0 +1,46 @@
+{{template "layout" .}}
+
+{{define "title"}}Quiz App — Start a Quiz{{end}}
+
+{{define "content"}}
+<div class="card">
+  <h2>Start a Quiz</h2>
+
+  {{if .Error}}
+  <div style="background:#2a0d0d;border:1px solid #da3633;border-radius:6px;padding:0.8rem 1rem;margin-bottom:1rem;color:#ffa198;">
+    {{.Error}}
+  </div>
+  {{end}}
+
+  <form method="POST" action="/quiz/start">
+    <div class="form-group">
+      <label>Topics</label>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.3rem;">
+        {{range .Topics}}
+        <label style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:0.4rem 0.8rem;font-weight:normal;">
+          <input type="checkbox" name="topics" value="{{.}}"> {{.}}
+        </label>
+        {{end}}
+      </div>
+      <div style="color:#8b949e;font-size:0.82rem;margin-top:0.4rem;">Leave all unchecked to include all topics.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Difficulty</label>
+      <select name="difficulty">
+        <option value="">All difficulties</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Number of questions</label>
+      <input type="number" name="count" value="10" min="1" max="50">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Start Quiz →</button>
+  </form>
+</div>
+{{end}}
