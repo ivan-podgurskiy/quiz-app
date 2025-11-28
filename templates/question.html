@@ -1,0 +1,47 @@
+{{template "layout" .}}
+
+{{define "title"}}Question {{.Index}} of {{.Total}}{{end}}
+
+{{define "content"}}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+    <span style="color:#8b949e;font-size:0.9rem;">Question {{.Index}} / {{.Total}}</span>
+    <span>
+      <span class="badge badge-{{.Question.Difficulty}}">{{.Question.Difficulty}}</span>
+      <span style="color:#484f58;font-size:0.8rem;margin-left:0.5rem;">{{.Question.Subtopic}}</span>
+    </span>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" style="width: {{percent .Index .Total}}%"></div>
+  </div>
+
+  <h2 style="margin-bottom:1.2rem;line-height:1.5;">{{.Question.Question}}</h2>
+
+  {{if .IsCode}}
+  <pre><code class="{{.LangClass}}">{{.Question.Code}}</code></pre>
+  <div style="margin-top:1rem;"></div>
+  {{end}}
+
+  <form method="POST" action="/quiz/{{.SessionID}}/answer">
+    {{if .IsMultiple}}
+    <div style="color:#8b949e;font-size:0.82rem;margin-bottom:0.7rem;">Select all that apply.</div>
+    {{end}}
+
+    {{range .Options}}
+    <label class="option-row">
+      {{if $.IsMultiple}}
+      <input type="checkbox" name="options" value="{{.ID}}">
+      {{else}}
+      <input type="radio" name="options" value="{{.ID}}">
+      {{end}}
+      {{.Text}}
+    </label>
+    {{end}}
+
+    <div style="margin-top:1.2rem;">
+      <button type="submit" class="btn btn-primary">Submit Answer</button>
+    </div>
+  </form>
+</div>
+{{end}}

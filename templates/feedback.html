@@ -1,0 +1,56 @@
+{{template "layout" .}}
+
+{{define "title"}}{{if .Correct}}Correct!{{else}}Incorrect{{end}} — Quiz{{end}}
+
+{{define "content"}}
+<div class="card">
+  {{if .Correct}}
+  <div style="text-align:center;margin-bottom:1.2rem;">
+    <span class="badge badge-correct" style="font-size:1rem;padding:0.4rem 1.2rem;">✓ Correct!</span>
+  </div>
+  {{else}}
+  <div style="text-align:center;margin-bottom:1.2rem;">
+    <span class="badge badge-wrong" style="font-size:1rem;padding:0.4rem 1.2rem;">✗ Incorrect</span>
+  </div>
+  {{end}}
+
+  <h2 style="margin-bottom:1rem;line-height:1.5;">{{.Question.Question}}</h2>
+
+  {{if .IsCode}}
+  <pre><code class="{{.LangClass}}">{{.Question.Code}}</code></pre>
+  <div style="margin-top:1rem;"></div>
+  {{end}}
+
+  <div style="margin-bottom:1rem;">
+    {{range .Options}}
+    {{$selected := index $.SelectedIDs .ID}}
+    <div class="option-row {{optionClass .Correct $selected}}">
+      {{if .Correct}}✓{{else if $selected}}✗{{else}}&nbsp;{{end}}
+      &nbsp;{{.Text}}
+      {{if .Correct}}<span style="color:#56d364;font-size:0.8rem;margin-left:0.5rem;">(correct answer)</span>{{end}}
+    </div>
+    {{end}}
+  </div>
+
+  {{if .Question.Explanation}}
+  <div class="explanation-box">
+    <strong style="color:#58a6ff;">Explanation:</strong><br>
+    {{.Question.Explanation}}
+  </div>
+  {{end}}
+
+  {{if .Question.DocURL}}
+  <div style="margin-top:0.8rem;font-size:0.85rem;">
+    <a href="{{.Question.DocURL}}" target="_blank" rel="noopener" style="color:#58a6ff;">📖 Read the docs →</a>
+  </div>
+  {{end}}
+
+  <div style="margin-top:1.5rem;text-align:right;">
+    {{if .IsLast}}
+    <a href="/quiz/{{.SessionID}}/summary" class="btn btn-primary">View Summary →</a>
+    {{else}}
+    <a href="/quiz/{{.SessionID}}/question" class="btn btn-primary">Next Question →</a>
+    {{end}}
+  </div>
+</div>
+{{end}}
