@@ -1,0 +1,255 @@
+- id: elixir-basics-001
+  version: "1"
+  topic: Elixir
+  subtopic: Data Types
+  difficulty: beginner
+  type: single_choice
+  question: "Which of the following is an atom in Elixir?"
+  options:
+    - id: a
+      text: '"hello"'
+      correct: false
+    - id: b
+      text: ":hello"
+      correct: true
+    - id: c
+      text: "42"
+      correct: false
+    - id: d
+      text: "[1, 2, 3]"
+      correct: false
+  explanation: "Atoms are constants whose value is their own name. They start with a colon, like :hello or :ok."
+  doc_url: "https://hexdocs.pm/elixir/basic-types.html#atoms"
+  tags: [atoms, data-types]
+
+- id: elixir-basics-002
+  version: "1"
+  topic: Elixir
+  subtopic: Pattern Matching
+  difficulty: beginner
+  type: single_choice
+  question: "What does the = operator do in Elixir?"
+  options:
+    - id: a
+      text: "Assigns a value to a variable"
+      correct: false
+    - id: b
+      text: "Performs pattern matching (match operator)"
+      correct: true
+    - id: c
+      text: "Checks equality"
+      correct: false
+    - id: d
+      text: "Defines a function"
+      correct: false
+  explanation: "In Elixir, = is the match operator, not assignment. It matches the left side against the right side, binding variables if possible."
+  doc_url: "https://hexdocs.pm/elixir/pattern-matching.html"
+  tags: [pattern-matching]
+
+- id: elixir-basics-003
+  version: "1"
+  topic: Elixir
+  subtopic: Lists
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are valid ways to prepend to a list in Elixir? (Select all that apply)"
+  options:
+    - id: a
+      text: "[0 | list]"
+      correct: true
+    - id: b
+      text: "List.prepend(list, 0)"
+      correct: false
+    - id: c
+      text: "[0] ++ list"
+      correct: true
+    - id: d
+      text: "list.prepend(0)"
+      correct: false
+  explanation: "The cons operator [head | tail] and ++ concatenation both work. List.prepend/2 and dot-notation methods don't exist in Elixir's standard library."
+  doc_url: "https://hexdocs.pm/elixir/List.html"
+  tags: [lists, data-structures]
+
+- id: elixir-basics-004
+  version: "1"
+  topic: Elixir
+  subtopic: Functions
+  difficulty: beginner
+  type: code_snippet
+  question: "What is the output of the following code?"
+  code: |
+    defmodule Math do
+      def double(x), do: x * 2
+    end
+
+    IO.inspect(Math.double(5))
+  options:
+    - id: a
+      text: "5"
+      correct: false
+    - id: b
+      text: "10"
+      correct: true
+    - id: c
+      text: "25"
+      correct: false
+    - id: d
+      text: "Error: undefined function"
+      correct: false
+  explanation: "The double/1 function multiplies its argument by 2. Math.double(5) returns 10, and IO.inspect/1 prints and returns the value."
+  doc_url: "https://hexdocs.pm/elixir/modules-and-functions.html"
+  tags: [functions, modules]
+
+- id: elixir-basics-005
+  version: "1"
+  topic: Elixir
+  subtopic: Immutability
+  difficulty: beginner
+  type: single_choice
+  question: "In Elixir, what happens when you 'modify' a variable?"
+  options:
+    - id: a
+      text: "The original value is changed in memory"
+      correct: false
+    - id: b
+      text: "A new binding is created; the original value is unchanged"
+      correct: true
+    - id: c
+      text: "An error is raised because variables are immutable"
+      correct: false
+    - id: d
+      text: "The variable is locked and cannot be reused"
+      correct: false
+  explanation: "Elixir data is immutable. Rebinding a variable creates a new reference to a new value; the old value is not modified."
+  doc_url: "https://hexdocs.pm/elixir/basic-types.html"
+  tags: [immutability, variables]
+
+- id: elixir-basics-006
+  version: "1"
+  topic: Elixir
+  subtopic: Processes
+  difficulty: intermediate
+  type: single_choice
+  question: "How do Elixir processes communicate with each other?"
+  options:
+    - id: a
+      text: "Through shared memory"
+      correct: false
+    - id: b
+      text: "Through message passing"
+      correct: true
+    - id: c
+      text: "Through global variables"
+      correct: false
+    - id: d
+      text: "Through file I/O"
+      correct: false
+  explanation: "Elixir processes are isolated and communicate exclusively via message passing using send/2 and receive."
+  doc_url: "https://hexdocs.pm/elixir/processes.html"
+  tags: [processes, concurrency]
+
+- id: elixir-basics-007
+  version: "1"
+  topic: Elixir
+  subtopic: Pattern Matching
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this pattern match produce?"
+  code: |
+    {a, b, c} = {1, 2, 3}
+    IO.puts(b)
+  options:
+    - id: a
+      text: "1"
+      correct: false
+    - id: b
+      text: "2"
+      correct: true
+    - id: c
+      text: "3"
+      correct: false
+    - id: d
+      text: "MatchError"
+      correct: false
+  explanation: "The tuple {1, 2, 3} is matched against {a, b, c}, binding a=1, b=2, c=3. IO.puts(b) prints 2."
+  doc_url: "https://hexdocs.pm/elixir/pattern-matching.html"
+  tags: [pattern-matching, tuples]
+
+- id: elixir-basics-008
+  version: "1"
+  topic: Elixir
+  subtopic: Pipe Operator
+  difficulty: beginner
+  type: single_choice
+  question: "What does the |> operator do in Elixir?"
+  options:
+    - id: a
+      text: "Performs bitwise OR"
+      correct: false
+    - id: b
+      text: "Pipes the result of the left expression as the first argument to the right function"
+      correct: true
+    - id: c
+      text: "Creates a list from two values"
+      correct: false
+    - id: d
+      text: "Defines a macro"
+      correct: false
+  explanation: "The pipe operator |> passes the result of the expression on its left as the first argument to the function on its right, enabling clear data transformation chains."
+  doc_url: "https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2"
+  tags: [pipe-operator, functional-programming]
+
+- id: elixir-basics-009
+  version: "1"
+  topic: Elixir
+  subtopic: Maps
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which statements about Elixir Maps are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Maps allow any value as a key"
+      correct: true
+    - id: b
+      text: "Maps are ordered by insertion order"
+      correct: false
+    - id: c
+      text: "Map.get/2 returns nil for missing keys by default"
+      correct: true
+    - id: d
+      text: "Maps are defined with curly braces {}"
+      correct: false
+  explanation: "Maps in Elixir use %{} syntax, allow any type as key, are unordered, and Map.get/2 returns nil (or a default) for missing keys."
+  doc_url: "https://hexdocs.pm/elixir/Map.html"
+  tags: [maps, data-structures]
+
+- id: elixir-basics-010
+  version: "1"
+  topic: Elixir
+  subtopic: Recursion
+  difficulty: intermediate
+  type: code_snippet
+  question: "What is the result of calling sum([1, 2, 3])?"
+  code: |
+    defmodule MyList do
+      def sum([]), do: 0
+      def sum([head | tail]), do: head + sum(tail)
+    end
+
+    MyList.sum([1, 2, 3])
+  options:
+    - id: a
+      text: "0"
+      correct: false
+    - id: b
+      text: "3"
+      correct: false
+    - id: c
+      text: "6"
+      correct: true
+    - id: d
+      text: "Infinite recursion"
+      correct: false
+  explanation: "sum([1,2,3]) = 1 + sum([2,3]) = 1 + 2 + sum([3]) = 1 + 2 + 3 + sum([]) = 1 + 2 + 3 + 0 = 6"
+  doc_url: "https://hexdocs.pm/elixir/recursion.html"
+  tags: [recursion, pattern-matching]
