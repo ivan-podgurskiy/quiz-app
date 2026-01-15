@@ -1,0 +1,210 @@
+- id: elixir-adv-001
+  version: "1"
+  topic: Elixir
+  subtopic: OTP
+  difficulty: advanced
+  type: single_choice
+  question: "What is OTP in the context of Elixir/Erlang?"
+  options:
+    - id: a
+      text: "A one-time password library for authentication"
+      correct: false
+    - id: b
+      text: "A set of Erlang libraries, behaviours, and design principles for building fault-tolerant concurrent systems"
+      correct: true
+    - id: c
+      text: "An Elixir package manager alternative to Mix"
+      correct: false
+    - id: d
+      text: "A protocol for inter-node communication"
+      correct: false
+  explanation: "OTP (Open Telecom Platform) is a collection of middleware, libraries, and tools including GenServer, Supervisor, Application, and more. It provides battle-tested patterns for building reliable, distributed, fault-tolerant systems."
+  doc_url: "https://hexdocs.pm/elixir/introduction-to-mix.html"
+  tags: [otp, fault-tolerance, concurrency]
+
+- id: elixir-adv-002
+  version: "1"
+  topic: Elixir
+  subtopic: Supervisors
+  difficulty: advanced
+  type: single_choice
+  question: "What does the `:one_for_one` supervisor strategy do?"
+  options:
+    - id: a
+      text: "If one child crashes, all children are restarted"
+      correct: false
+    - id: b
+      text: "If one child crashes, only that child is restarted"
+      correct: true
+    - id: c
+      text: "If one child crashes, the supervisor itself crashes"
+      correct: false
+    - id: d
+      text: "Children are started one at a time, pausing between each"
+      correct: false
+  explanation: "`:one_for_one` restarts only the crashed child. Other strategies: `:one_for_all` (restart all children), `:rest_for_one` (restart the crashed child and all children started after it)."
+  doc_url: "https://hexdocs.pm/elixir/Supervisor.html"
+  tags: [supervisor, otp, fault-tolerance]
+
+- id: elixir-adv-003
+  version: "1"
+  topic: Elixir
+  subtopic: GenServer
+  difficulty: advanced
+  type: code_snippet
+  question: "Which callback handles synchronous calls in a GenServer?"
+  code: |
+    defmodule Counter do
+      use GenServer
+
+      def start_link(initial), do: GenServer.start_link(__MODULE__, initial)
+
+      def get(pid), do: GenServer.call(pid, :get)
+      def inc(pid), do: GenServer.cast(pid, :inc)
+
+      # Which callback handles GenServer.call/2?
+    end
+  options:
+    - id: a
+      text: "handle_cast/2"
+      correct: false
+    - id: b
+      text: "handle_info/2"
+      correct: false
+    - id: c
+      text: "handle_call/3"
+      correct: true
+    - id: d
+      text: "handle_continue/2"
+      correct: false
+  explanation: "`GenServer.call/2` is synchronous — the caller blocks waiting for a reply. The server handles it with `handle_call/3 (request, from, state)` which must return `{:reply, reply, new_state}`. `handle_cast/2` handles async messages (no reply)."
+  doc_url: "https://hexdocs.pm/elixir/GenServer.html"
+  tags: [genserver, otp, callbacks]
+
+- id: elixir-adv-004
+  version: "1"
+  topic: Elixir
+  subtopic: Processes
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which statements about Elixir processes are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Processes are isolated — a crash in one does not directly affect others"
+      correct: true
+    - id: b
+      text: "Processes share heap memory for efficiency"
+      correct: false
+    - id: c
+      text: "A process can monitor another process and receive a :DOWN message if it exits"
+      correct: true
+    - id: d
+      text: "Processes are OS threads"
+      correct: false
+  explanation: "BEAM processes are lightweight (~300 bytes), isolated with separate heaps (no shared memory — data is copied on send), scheduled by the VM (not OS threads), and can monitor each other for exit signals."
+  doc_url: "https://hexdocs.pm/elixir/processes.html"
+  tags: [processes, isolation, monitoring]
+
+- id: elixir-adv-005
+  version: "1"
+  topic: Elixir
+  subtopic: Pattern Matching
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this function return when called as `shape_area({:circle, 5})`?"
+  code: |
+    defmodule Shapes do
+      def area({:circle, r}), do: :math.pi() * r * r
+      def area({:rect, w, h}), do: w * h
+      def area(_), do: {:error, :unknown_shape}
+    end
+
+    Shapes.area({:circle, 5})
+  options:
+    - id: a
+      text: "25"
+      correct: false
+    - id: b
+      text: "78.53981633974483"
+      correct: true
+    - id: c
+      text: "{:error, :unknown_shape}"
+      correct: false
+    - id: d
+      text: "ArgumentError"
+      correct: false
+  explanation: "The tuple `{:circle, 5}` matches the first clause, binding `r = 5`. `:math.pi() * 5 * 5 ≈ 78.54`. Function clauses are pattern-matched top-to-bottom — a core Elixir dispatch mechanism."
+  doc_url: "https://hexdocs.pm/elixir/pattern-matching.html"
+  tags: [pattern-matching, functions, structs]
+
+- id: elixir-adv-006
+  version: "1"
+  topic: Elixir
+  subtopic: Metaprogramming
+  difficulty: advanced
+  type: single_choice
+  question: "What does `quote` do in Elixir?"
+  options:
+    - id: a
+      text: "Converts a string to an atom"
+      correct: false
+    - id: b
+      text: "Returns the AST (abstract syntax tree) representation of the given code without evaluating it"
+      correct: true
+    - id: c
+      text: "Marks a function as a macro"
+      correct: false
+    - id: d
+      text: "Interpolates variables into a string"
+      correct: false
+  explanation: "`quote do ... end` returns the internal AST representation of Elixir code as a data structure. Combined with `unquote` and `defmacro`, this is the foundation of Elixir's hygienic macro system."
+  doc_url: "https://hexdocs.pm/elixir/Kernel.SpecialForms.html#quote/2"
+  tags: [macros, metaprogramming, ast]
+
+- id: elixir-adv-007
+  version: "1"
+  topic: Elixir
+  subtopic: ETS
+  difficulty: advanced
+  type: single_choice
+  question: "What is ETS in Elixir/Erlang?"
+  options:
+    - id: a
+      text: "An external time-series database adapter"
+      correct: false
+    - id: b
+      text: "An in-memory key-value store built into the BEAM VM, accessible concurrently from multiple processes"
+      correct: true
+    - id: c
+      text: "A tool for encoding Elixir terms to binary"
+      correct: false
+    - id: d
+      text: "An Elixir testing suite framework"
+      correct: false
+  explanation: "ETS (Erlang Term Storage) is a built-in in-memory store that can hold large amounts of data with O(1) lookup. Unlike process state, ETS tables survive process crashes (if owned by a supervisor) and support concurrent reads/writes."
+  doc_url: "https://hexdocs.pm/elixir/erlang-libraries.html#ets"
+  tags: [ets, storage, performance]
+
+- id: elixir-adv-008
+  version: "1"
+  topic: Elixir
+  subtopic: Streams
+  difficulty: advanced
+  type: single_choice
+  question: "What is the key difference between `Enum` and `Stream` in Elixir?"
+  options:
+    - id: a
+      text: "`Enum` works on lists only; `Stream` works on all enumerables"
+      correct: false
+    - id: b
+      text: "`Stream` operations are lazy — they don't execute until a terminal function (like `Enum.to_list/1`) is called"
+      correct: true
+    - id: c
+      text: "`Stream` is faster than `Enum` for all use cases"
+      correct: false
+    - id: d
+      text: "`Enum` is deprecated in favor of `Stream`"
+      correct: false
+  explanation: "`Enum` functions are eager — each step processes the entire collection and returns a new one. `Stream` functions build a lazy pipeline that only executes when triggered by a terminal `Enum` call, enabling efficient processing of large or infinite collections."
+  doc_url: "https://hexdocs.pm/elixir/Stream.html"
+  tags: [streams, lazy-evaluation, enum]
