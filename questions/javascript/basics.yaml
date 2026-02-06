@@ -1,0 +1,260 @@
+- id: js-basics-001
+  version: "1"
+  topic: JavaScript
+  subtopic: Types
+  difficulty: beginner
+  type: single_choice
+  question: "What does `typeof null` return in JavaScript?"
+  options:
+    - id: a
+      text: '"null"'
+      correct: false
+    - id: b
+      text: '"undefined"'
+      correct: false
+    - id: c
+      text: '"object"'
+      correct: true
+    - id: d
+      text: '"symbol"'
+      correct: false
+  explanation: '`typeof null === "object"` is a long-standing bug in JavaScript dating back to the original implementation. null is not actually an object — this is simply a historical mistake that cannot be fixed without breaking existing code.'
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof"
+  tags: [types, quirks]
+
+- id: js-basics-002
+  version: "1"
+  topic: JavaScript
+  subtopic: Equality
+  difficulty: beginner
+  type: single_choice
+  question: "What is the difference between == and === in JavaScript?"
+  options:
+    - id: a
+      text: "They are identical in modern JavaScript"
+      correct: false
+    - id: b
+      text: "== performs type coercion before comparing; === compares value and type without coercion"
+      correct: true
+    - id: c
+      text: "=== is slower because it does an extra type check"
+      correct: false
+    - id: d
+      text: "== only works for primitives; === works for all types"
+      correct: false
+  explanation: "`==` coerces operands to the same type before comparing (e.g., `0 == false` is true). `===` (strict equality) requires both value and type to match — always prefer it."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality"
+  tags: [equality, types]
+
+- id: js-basics-003
+  version: "1"
+  topic: JavaScript
+  subtopic: Scope
+  difficulty: beginner
+  type: single_choice
+  question: "What is hoisting in JavaScript?"
+  options:
+    - id: a
+      text: "Moving large functions to the top of the file for performance"
+      correct: false
+    - id: b
+      text: "The behavior where variable and function declarations are moved to the top of their scope before code executes"
+      correct: true
+    - id: c
+      text: "A way to attach event listeners at load time"
+      correct: false
+    - id: d
+      text: "Importing modules at the top of a file"
+      correct: false
+  explanation: "During compilation, JS moves `var` declarations (not initializations) and function declarations to the top of their scope. `let` and `const` are hoisted but not initialized (temporal dead zone)."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting"
+  tags: [hoisting, scope]
+
+- id: js-basics-004
+  version: "1"
+  topic: JavaScript
+  subtopic: Falsy Values
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are falsy values in JavaScript? (Select all that apply)"
+  options:
+    - id: a
+      text: "0"
+      correct: true
+    - id: b
+      text: '""'
+      correct: true
+    - id: c
+      text: "null"
+      correct: true
+    - id: d
+      text: "[] (empty array)"
+      correct: false
+  explanation: "Falsy values: false, 0, -0, 0n, \"\", null, undefined, NaN. Empty arrays and empty objects are truthy — they are objects, and object references are always truthy."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Glossary/Falsy"
+  tags: [falsy, boolean, coercion]
+
+- id: js-basics-005
+  version: "1"
+  topic: JavaScript
+  subtopic: var vs let vs const
+  difficulty: beginner
+  type: single_choice
+  question: "Which statement best describes the difference between `var`, `let`, and `const`?"
+  options:
+    - id: a
+      text: "They are all identical; use any one"
+      correct: false
+    - id: b
+      text: "`var` is function-scoped and hoisted; `let`/`const` are block-scoped and not initialized until their line"
+      correct: true
+    - id: c
+      text: "`const` values cannot be used in expressions"
+      correct: false
+    - id: d
+      text: "`let` is the same as `var` but runs faster"
+      correct: false
+  explanation: "`var` is function-scoped and hoisted with `undefined`. `let` and `const` are block-scoped and in the temporal dead zone until their declaration. `const` also prevents reassignment (but not mutation of objects/arrays)."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let"
+  tags: [var, let, const, scope]
+
+- id: js-basics-006
+  version: "1"
+  topic: JavaScript
+  subtopic: Closures
+  difficulty: intermediate
+  type: single_choice
+  question: "What is a closure in JavaScript?"
+  options:
+    - id: a
+      text: "A function that has been bound to a specific `this` context"
+      correct: false
+    - id: b
+      text: "A function that retains access to its outer (lexical) scope even after that outer function has returned"
+      correct: true
+    - id: c
+      text: "A function that cannot be called from outside its module"
+      correct: false
+    - id: d
+      text: "An immediately invoked function expression (IIFE)"
+      correct: false
+  explanation: "A closure is formed when a function \"closes over\" variables from its enclosing scope. The inner function retains a live reference to those variables even after the outer function finishes executing."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures"
+  tags: [closures, scope]
+
+- id: js-basics-007
+  version: "1"
+  topic: JavaScript
+  subtopic: Promises
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this code log?"
+  code: |
+    console.log('1');
+
+    setTimeout(() => console.log('2'), 0);
+
+    Promise.resolve().then(() => console.log('3'));
+
+    console.log('4');
+  options:
+    - id: a
+      text: "1 2 3 4"
+      correct: false
+    - id: b
+      text: "1 4 2 3"
+      correct: false
+    - id: c
+      text: "1 4 3 2"
+      correct: true
+    - id: d
+      text: "1 3 4 2"
+      correct: false
+  explanation: "Synchronous code runs first: 1, 4. Then the microtask queue (Promise.then): 3. Finally the macrotask queue (setTimeout): 2. Microtasks always drain before the next macrotask."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide"
+  tags: [event-loop, promises, setTimeout]
+
+- id: js-basics-008
+  version: "1"
+  topic: JavaScript
+  subtopic: Async/Await
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this async function return?"
+  code: |
+    async function greet() {
+      return 'hello';
+    }
+
+    const result = greet();
+    console.log(typeof result);
+  options:
+    - id: a
+      text: '"string"'
+      correct: false
+    - id: b
+      text: '"object"'
+      correct: true
+    - id: c
+      text: '"undefined"'
+      correct: false
+    - id: d
+      text: '"function"'
+      correct: false
+  explanation: "An `async` function always returns a Promise, even if you return a plain value. `typeof Promise` is `\"object\"`. To get `'hello'` you'd need `await greet()` or `.then()`."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+  tags: [async-await, promises]
+
+- id: js-basics-009
+  version: "1"
+  topic: JavaScript
+  subtopic: Prototypes
+  difficulty: intermediate
+  type: single_choice
+  question: "What does `Function.prototype.bind()` return?"
+  options:
+    - id: a
+      text: "The result of calling the function immediately"
+      correct: false
+    - id: b
+      text: "A new function with `this` permanently bound to the specified value"
+      correct: true
+    - id: c
+      text: "A Promise that resolves to the function's return value"
+      correct: false
+    - id: d
+      text: "The original function with a modified prototype"
+      correct: false
+  explanation: "`bind(thisArg, ...args)` creates a new function with `this` fixed to `thisArg` and optionally pre-fills arguments (partial application). The original function is unchanged."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind"
+  tags: [bind, this, prototypes]
+
+- id: js-basics-010
+  version: "1"
+  topic: JavaScript
+  subtopic: Array Methods
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this code output?"
+  code: |
+    const nums = [1, 2, 3, 4, 5];
+    const result = nums
+      .filter(n => n % 2 === 0)
+      .map(n => n * 3);
+    console.log(result);
+  options:
+    - id: a
+      text: "[3, 6, 9, 12, 15]"
+      correct: false
+    - id: b
+      text: "[6, 12]"
+      correct: true
+    - id: c
+      text: "[2, 4]"
+      correct: false
+    - id: d
+      text: "[2, 6, 4, 12]"
+      correct: false
+  explanation: "`filter` keeps even numbers: [2, 4]. Then `map` multiplies each by 3: [6, 12]. Each method returns a new array; the original is unchanged."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter"
+  tags: [array, filter, map, functional]
