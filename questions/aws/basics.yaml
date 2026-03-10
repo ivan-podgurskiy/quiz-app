@@ -1,0 +1,255 @@
+- id: aws-basics-001
+  version: "1"
+  topic: AWS
+  subtopic: IAM
+  difficulty: beginner
+  type: single_choice
+  question: "What does IAM stand for in AWS?"
+  options:
+    - id: a
+      text: "Internet Access Management"
+      correct: false
+    - id: b
+      text: "Identity and Access Management"
+      correct: true
+    - id: c
+      text: "Integrated Account Manager"
+      correct: false
+    - id: d
+      text: "Instance Allocation Module"
+      correct: false
+  explanation: "IAM stands for Identity and Access Management. It lets you securely control access to AWS services and resources by managing users, groups, roles, and their permissions."
+  doc_url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"
+  tags: [iam, security, identity]
+
+- id: aws-basics-002
+  version: "1"
+  topic: AWS
+  subtopic: S3
+  difficulty: beginner
+  type: single_choice
+  question: "What is the maximum size of a single object you can store in Amazon S3?"
+  options:
+    - id: a
+      text: "5 GB"
+      correct: false
+    - id: b
+      text: "50 GB"
+      correct: false
+    - id: c
+      text: "5 TB"
+      correct: true
+    - id: d
+      text: "Unlimited"
+      correct: false
+  explanation: "The maximum size of a single S3 object is 5 TB. For objects larger than 5 GB, you must use multipart upload. A single PUT request can upload at most 5 GB."
+  doc_url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/ObjectsinBuckets.html"
+  tags: [s3, storage, limits]
+
+- id: aws-basics-003
+  version: "1"
+  topic: AWS
+  subtopic: EC2
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are valid EC2 instance purchasing options? (Select all that apply)"
+  options:
+    - id: a
+      text: "On-Demand Instances"
+      correct: true
+    - id: b
+      text: "Spot Instances"
+      correct: true
+    - id: c
+      text: "Reserved Instances"
+      correct: true
+    - id: d
+      text: "Perpetual Instances"
+      correct: false
+  explanation: "AWS EC2 offers On-Demand (pay per second, no commitment), Spot (bid on spare capacity for up to 90% discount), and Reserved (commit to 1 or 3 years for significant discounts). There is no 'Perpetual' option."
+  doc_url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html"
+  tags: [ec2, compute, pricing]
+
+- id: aws-basics-004
+  version: "1"
+  topic: AWS
+  subtopic: Lambda
+  difficulty: beginner
+  type: single_choice
+  question: "What is the default timeout for an AWS Lambda function?"
+  options:
+    - id: a
+      text: "3 seconds"
+      correct: true
+    - id: b
+      text: "30 seconds"
+      correct: false
+    - id: c
+      text: "5 minutes"
+      correct: false
+    - id: d
+      text: "15 minutes"
+      correct: false
+  explanation: "The default timeout for a Lambda function is 3 seconds. You can configure it up to the maximum of 15 minutes (900 seconds)."
+  doc_url: "https://docs.aws.amazon.com/lambda/latest/dg/configuration-function-common.html"
+  tags: [lambda, serverless, compute]
+
+- id: aws-basics-005
+  version: "1"
+  topic: AWS
+  subtopic: VPC
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the primary purpose of a NAT Gateway in a VPC?"
+  options:
+    - id: a
+      text: "Allow inbound traffic from the internet to private subnets"
+      correct: false
+    - id: b
+      text: "Allow instances in private subnets to initiate outbound connections to the internet"
+      correct: true
+    - id: c
+      text: "Provide DNS resolution for instances in the VPC"
+      correct: false
+    - id: d
+      text: "Load-balance traffic across multiple Availability Zones"
+      correct: false
+  explanation: "A NAT Gateway enables instances in a private subnet to connect to the internet (e.g., for software updates) while preventing the internet from initiating inbound connections to those instances."
+  doc_url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+  tags: [vpc, networking, nat]
+
+- id: aws-basics-006
+  version: "1"
+  topic: AWS
+  subtopic: S3
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which S3 storage classes are designed for infrequently accessed data? (Select all that apply)"
+  options:
+    - id: a
+      text: "S3 Standard-IA"
+      correct: true
+    - id: b
+      text: "S3 One Zone-IA"
+      correct: true
+    - id: c
+      text: "S3 Standard"
+      correct: false
+    - id: d
+      text: "S3 Glacier Instant Retrieval"
+      correct: true
+  explanation: "S3 Standard-IA, One Zone-IA, and Glacier Instant Retrieval are all for infrequent access. Standard-IA replicates across multiple AZs, One Zone-IA stores in a single AZ at lower cost, and Glacier Instant Retrieval provides millisecond access for archived data accessed roughly once per quarter."
+  doc_url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+  tags: [s3, storage, storage-classes]
+
+- id: aws-basics-007
+  version: "1"
+  topic: AWS
+  subtopic: IAM
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this IAM policy allow?"
+  code: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::my-bucket/*"
+        },
+        {
+          "Effect": "Deny",
+          "Action": "s3:*",
+          "Resource": "arn:aws:s3:::my-bucket/secret/*"
+        }
+      ]
+    }
+  options:
+    - id: a
+      text: "Read any object in my-bucket"
+      correct: false
+    - id: b
+      text: "Read any object in my-bucket except those under the secret/ prefix"
+      correct: true
+    - id: c
+      text: "Full access to my-bucket except the secret/ prefix"
+      correct: false
+    - id: d
+      text: "Deny all access to my-bucket"
+      correct: false
+  explanation: "The first statement allows s3:GetObject (read) on all objects in my-bucket. The second statement explicitly denies all S3 actions on the secret/ prefix. Since explicit Deny always overrides Allow, the net effect is read access to everything except objects under secret/."
+  doc_url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+  tags: [iam, s3, policies, security]
+
+- id: aws-basics-008
+  version: "1"
+  topic: AWS
+  subtopic: Route 53
+  difficulty: intermediate
+  type: single_choice
+  question: "Which Route 53 routing policy sends traffic to the resource with the lowest network latency for the end user?"
+  options:
+    - id: a
+      text: "Simple routing"
+      correct: false
+    - id: b
+      text: "Weighted routing"
+      correct: false
+    - id: c
+      text: "Latency-based routing"
+      correct: true
+    - id: d
+      text: "Geolocation routing"
+      correct: false
+  explanation: "Latency-based routing directs users to the AWS Region that provides the lowest latency. Geolocation routes based on the user's geographic location, while weighted routing distributes traffic according to assigned weights."
+  doc_url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html"
+  tags: [route53, dns, networking]
+
+- id: aws-basics-009
+  version: "1"
+  topic: AWS
+  subtopic: CloudFormation
+  difficulty: intermediate
+  type: single_choice
+  question: "In AWS CloudFormation, what happens by default if a resource fails to create during stack creation?"
+  options:
+    - id: a
+      text: "The stack continues creating the remaining resources"
+      correct: false
+    - id: b
+      text: "The stack pauses and waits for manual intervention"
+      correct: false
+    - id: c
+      text: "The entire stack rolls back and all created resources are deleted"
+      correct: true
+    - id: d
+      text: "Only the failed resource is skipped and marked as FAILED"
+      correct: false
+  explanation: "By default, CloudFormation uses rollback on failure. If any resource fails to create, the entire stack is rolled back — all successfully created resources are deleted and the stack status becomes ROLLBACK_COMPLETE."
+  doc_url: "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stack-failure-options.html"
+  tags: [cloudformation, iac, deployment]
+
+- id: aws-basics-010
+  version: "1"
+  topic: AWS
+  subtopic: SQS
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the default visibility timeout for an Amazon SQS message?"
+  options:
+    - id: a
+      text: "10 seconds"
+      correct: false
+    - id: b
+      text: "30 seconds"
+      correct: true
+    - id: c
+      text: "1 minute"
+      correct: false
+    - id: d
+      text: "5 minutes"
+      correct: false
+  explanation: "The default visibility timeout is 30 seconds. When a consumer receives a message, it becomes invisible to other consumers for this duration. If the consumer doesn't delete the message within the timeout, it becomes visible again for reprocessing."
+  doc_url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html"
+  tags: [sqs, messaging, queues]

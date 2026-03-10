@@ -1,0 +1,479 @@
+- id: sd-advanced-001
+  version: "1"
+  topic: System Design
+  subtopic: Consistent Hashing
+  difficulty: intermediate
+  type: single_choice
+  question: "What problem does consistent hashing solve compared to simple modulo hashing?"
+  options:
+    - id: a
+      text: "It eliminates the need for a hash function entirely"
+      correct: false
+    - id: b
+      text: "When nodes are added or removed, only a fraction of keys need to be remapped instead of nearly all of them"
+      correct: true
+    - id: c
+      text: "It guarantees uniform distribution of keys regardless of the hash function"
+      correct: false
+    - id: d
+      text: "It makes hashing reversible so you can recover the original key"
+      correct: false
+  explanation: "With modulo hashing (key % N), adding or removing a node changes N and remaps almost every key. Consistent hashing arranges nodes on a ring; when a node is added or removed, only the keys in its adjacent range are affected — typically K/N keys where K is total keys and N is nodes."
+  doc_url: "https://en.wikipedia.org/wiki/Consistent_hashing"
+  tags: [consistent-hashing, distributed-systems, partitioning]
+
+- id: sd-advanced-002
+  version: "1"
+  topic: System Design
+  subtopic: Database Sharding
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the main risk of choosing a poor shard key when horizontally partitioning a database?"
+  options:
+    - id: a
+      text: "The database will reject writes that don't match the shard key format"
+      correct: false
+    - id: b
+      text: "Data can become unevenly distributed, creating hot spots that negate the benefits of sharding"
+      correct: true
+    - id: c
+      text: "Read replicas will stop working"
+      correct: false
+    - id: d
+      text: "Indexes will be automatically dropped on all shards"
+      correct: false
+  explanation: "A poor shard key (low cardinality, skewed distribution, or temporal keys) concentrates traffic on a few shards — so-called hot spots. A good shard key has high cardinality and uniform distribution, ensuring even load across shards."
+  doc_url: "https://www.mongodb.com/docs/manual/core/sharding-shard-key/"
+  tags: [sharding, database, partitioning, hot-spots]
+
+- id: sd-advanced-003
+  version: "1"
+  topic: System Design
+  subtopic: Consistency Models
+  difficulty: intermediate
+  type: single_choice
+  question: "What does eventual consistency guarantee?"
+  options:
+    - id: a
+      text: "All replicas return the same value at all times"
+      correct: false
+    - id: b
+      text: "If no new updates are made, all replicas will eventually converge to the same value"
+      correct: true
+    - id: c
+      text: "Writes are immediately visible to all readers"
+      correct: false
+    - id: d
+      text: "A read always returns the most recent write"
+      correct: false
+  explanation: "Eventual consistency means that, given enough time without new writes, all replicas will converge to the same state. Reads may temporarily return stale data. Systems like DynamoDB and Cassandra use this model to achieve high availability and partition tolerance."
+  doc_url: "https://en.wikipedia.org/wiki/Eventual_consistency"
+  tags: [consistency, eventual-consistency, distributed-systems]
+
+- id: sd-advanced-004
+  version: "1"
+  topic: System Design
+  subtopic: Rate Limiting
+  difficulty: intermediate
+  type: single_choice
+  question: "How does the token bucket rate-limiting algorithm work?"
+  options:
+    - id: a
+      text: "It counts requests in fixed time windows and rejects requests when the window limit is reached"
+      correct: false
+    - id: b
+      text: "A bucket holds tokens added at a fixed rate; each request consumes a token, and requests are rejected when the bucket is empty"
+      correct: true
+    - id: c
+      text: "It logs the timestamp of every request and counts how many fall in a sliding window"
+      correct: false
+    - id: d
+      text: "It queues all requests and processes them at a constant rate"
+      correct: false
+  explanation: "The token bucket maintains a bucket of tokens refilled at a steady rate up to a maximum capacity. Each request removes one token. If the bucket is empty, the request is throttled. This allows short bursts (up to bucket capacity) while enforcing an average rate."
+  doc_url: "https://en.wikipedia.org/wiki/Token_bucket"
+  tags: [rate-limiting, token-bucket, algorithms]
+
+- id: sd-advanced-005
+  version: "1"
+  topic: System Design
+  subtopic: Leader Election
+  difficulty: advanced
+  type: single_choice
+  question: "In a distributed system, what is the purpose of leader election?"
+  options:
+    - id: a
+      text: "To select which node handles all read requests"
+      correct: false
+    - id: b
+      text: "To designate a single node to coordinate tasks that require a single point of decision-making, such as writes or job scheduling"
+      correct: true
+    - id: c
+      text: "To choose the fastest node and route all traffic to it"
+      correct: false
+    - id: d
+      text: "To remove faulty nodes from the cluster permanently"
+      correct: false
+  explanation: "Leader election ensures that exactly one node acts as the coordinator for certain operations (e.g., accepting writes, assigning work). Algorithms like Raft and ZAB implement this, with automatic re-election if the leader fails."
+  doc_url: "https://raft.github.io/"
+  tags: [leader-election, consensus, distributed-systems, raft]
+
+- id: sd-advanced-006
+  version: "1"
+  topic: System Design
+  subtopic: Circuit Breaker
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the circuit breaker pattern prevent in a microservices architecture?"
+  options:
+    - id: a
+      text: "SQL injection attacks on the database"
+      correct: false
+    - id: b
+      text: "Cascading failures by stopping calls to a failing downstream service after a threshold of errors"
+      correct: true
+    - id: c
+      text: "Unauthorized access to internal APIs"
+      correct: false
+    - id: d
+      text: "Data loss during network partitions"
+      correct: false
+  explanation: "A circuit breaker monitors calls to a downstream service. When failures exceed a threshold, it \"opens\" and immediately returns errors without making the call, giving the downstream service time to recover. After a timeout, it allows a trial request (half-open state) to check if the service has recovered."
+  doc_url: "https://martinfowler.com/bliki/CircuitBreaker.html"
+  tags: [circuit-breaker, resilience, microservices, fault-tolerance]
+
+- id: sd-advanced-007
+  version: "1"
+  topic: System Design
+  subtopic: CQRS
+  difficulty: advanced
+  type: single_choice
+  question: "What is the core idea behind Command Query Responsibility Segregation (CQRS)?"
+  options:
+    - id: a
+      text: "Using the same model and database for both reads and writes but caching the reads"
+      correct: false
+    - id: b
+      text: "Separating the read model from the write model so each can be optimized independently"
+      correct: true
+    - id: c
+      text: "Routing all queries through a command bus for audit logging"
+      correct: false
+    - id: d
+      text: "Replacing SQL databases with event stores"
+      correct: false
+  explanation: "CQRS separates the write side (commands that mutate state) from the read side (queries that return data). Each side can use different data models, databases, and scaling strategies. It pairs well with event sourcing but does not require it."
+  doc_url: "https://martinfowler.com/bliki/CQRS.html"
+  tags: [cqrs, architecture, read-write-separation]
+
+- id: sd-advanced-008
+  version: "1"
+  topic: System Design
+  subtopic: Bloom Filters
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which statements about Bloom filters are correct? (Select all that apply)"
+  options:
+    - id: a
+      text: "A Bloom filter can tell you with certainty that an element is NOT in the set"
+      correct: true
+    - id: b
+      text: "A Bloom filter may return false positives (saying an element is present when it is not)"
+      correct: true
+    - id: c
+      text: "Elements can be deleted from a standard Bloom filter"
+      correct: false
+    - id: d
+      text: "A Bloom filter uses significantly less memory than storing the full set of elements"
+      correct: true
+  explanation: "A Bloom filter is a space-efficient probabilistic data structure. It never produces false negatives — if it says an element is absent, it is guaranteed absent. However, it can produce false positives. Standard Bloom filters do not support deletion (counting Bloom filters do). They are used in databases, caches, and network systems to avoid expensive lookups."
+  doc_url: "https://en.wikipedia.org/wiki/Bloom_filter"
+  tags: [bloom-filter, probabilistic, data-structures]
+
+- id: sd-advanced-009
+  version: "1"
+  topic: System Design
+  subtopic: Back-of-the-Envelope Estimation
+  difficulty: intermediate
+  type: single_choice
+  question: "When estimating system capacity, approximately how many seconds are in a day?"
+  options:
+    - id: a
+      text: "~8,600"
+      correct: false
+    - id: b
+      text: "~86,400"
+      correct: true
+    - id: c
+      text: "~864,000"
+      correct: false
+    - id: d
+      text: "~8,640"
+      correct: false
+  explanation: "A day has 24 × 60 × 60 = 86,400 seconds. This number is essential for back-of-the-envelope calculations — for example, 1 million requests per day ≈ ~12 requests per second (1,000,000 / 86,400)."
+  doc_url: "https://blog.bytebytego.com/p/back-of-the-envelope-estimation"
+  tags: [estimation, capacity-planning, math]
+
+- id: sd-advanced-010
+  version: "1"
+  topic: System Design
+  subtopic: Event Sourcing
+  difficulty: advanced
+  type: single_choice
+  question: "In event sourcing, how is the current state of an entity determined?"
+  options:
+    - id: a
+      text: "By querying the latest row from a relational table"
+      correct: false
+    - id: b
+      text: "By replaying the ordered sequence of events from the event store"
+      correct: true
+    - id: c
+      text: "By reading the most recent cache entry"
+      correct: false
+    - id: d
+      text: "By polling all microservices for their local state"
+      correct: false
+  explanation: "Event sourcing stores every state change as an immutable event. The current state is reconstructed by replaying events in order. Snapshots can be taken periodically to avoid replaying the entire history. This provides a complete audit trail and enables temporal queries."
+  doc_url: "https://martinfowler.com/eaaDev/EventSourcing.html"
+  tags: [event-sourcing, architecture, audit-trail, cqrs]
+
+- id: sd-advanced-011
+  version: "1"
+  topic: System Design
+  subtopic: Saga Pattern
+  difficulty: advanced
+  type: single_choice
+  question: "What is the saga pattern used for in a distributed system?"
+  options:
+    - id: a
+      text: "Encrypting data in transit between services"
+      correct: false
+    - id: b
+      text: "Managing distributed transactions by breaking them into a sequence of local transactions with compensating actions on failure"
+      correct: true
+    - id: c
+      text: "Load balancing requests across database shards"
+      correct: false
+    - id: d
+      text: "Caching frequently accessed query results"
+      correct: false
+  explanation: "In microservices, you cannot use a single ACID transaction across services. A saga splits the workflow into local transactions. If step N fails, compensating transactions undo steps 1 through N-1. Sagas can be orchestrated (a central coordinator) or choreographed (each service listens for events)."
+  doc_url: "https://microservices.io/patterns/data/saga.html"
+  tags: [saga, distributed-transactions, compensation, microservices]
+
+- id: sd-advanced-012
+  version: "1"
+  topic: System Design
+  subtopic: Gossip Protocol
+  difficulty: advanced
+  type: single_choice
+  question: "How does a gossip protocol propagate information in a distributed cluster?"
+  options:
+    - id: a
+      text: "A central server broadcasts updates to all nodes simultaneously"
+      correct: false
+    - id: b
+      text: "Each node periodically shares its state with a random subset of peers, and information spreads exponentially"
+      correct: true
+    - id: c
+      text: "Nodes form a strict tree hierarchy and pass messages down"
+      correct: false
+    - id: d
+      text: "Only the leader node communicates with other nodes"
+      correct: false
+  explanation: "Gossip protocols work like rumors: each node periodically picks random peers and exchanges state. Information spreads exponentially — reaching all N nodes in O(log N) rounds. This is decentralized, fault-tolerant, and used in systems like Cassandra and Consul for membership, failure detection, and state dissemination."
+  doc_url: "https://en.wikipedia.org/wiki/Gossip_protocol"
+  tags: [gossip-protocol, peer-to-peer, distributed-systems, membership]
+
+- id: sd-advanced-013
+  version: "1"
+  topic: System Design
+  subtopic: Quorum
+  difficulty: advanced
+  type: single_choice
+  question: "In a replicated system with N replicas, what do quorum reads and writes (W + R > N) guarantee?"
+  options:
+    - id: a
+      text: "All replicas always have identical data"
+      correct: false
+    - id: b
+      text: "Every read will overlap with the most recent write, ensuring the reader sees the latest value"
+      correct: true
+    - id: c
+      text: "Write latency is always minimized"
+      correct: false
+    - id: d
+      text: "No data is ever replicated to more than one node"
+      correct: false
+  explanation: "With W write replicas, R read replicas, and W + R > N, at least one node in every read set participated in the most recent write. This guarantees strong consistency without requiring all replicas to acknowledge. Common setups: N=3, W=2, R=2. Tuning W and R trades off consistency against latency and availability."
+  doc_url: "https://en.wikipedia.org/wiki/Quorum_(distributed_computing)"
+  tags: [quorum, replication, consistency, distributed-systems]
+
+- id: sd-advanced-014
+  version: "1"
+  topic: System Design
+  subtopic: Cache Stampede
+  difficulty: intermediate
+  type: single_choice
+  question: "What is a cache stampede (thundering herd), and how can it be mitigated?"
+  options:
+    - id: a
+      text: "Too many items in the cache causing memory overflow — mitigated by increasing cache size"
+      correct: false
+    - id: b
+      text: "Many requests simultaneously miss the cache for the same key and all hit the database — mitigated by locking so only one request populates the cache"
+      correct: true
+    - id: c
+      text: "The cache returning stale data forever — mitigated by setting a TTL"
+      correct: false
+    - id: d
+      text: "Cache nodes failing in sequence — mitigated by adding more replicas"
+      correct: false
+  explanation: "When a popular cache key expires, hundreds of concurrent requests find a miss and all query the database simultaneously, potentially overwhelming it. Mitigations include request coalescing (only one goroutine/thread fetches while others wait), probabilistic early expiration, and locking the cache key during regeneration."
+  doc_url: "https://en.wikipedia.org/wiki/Cache_stampede"
+  tags: [cache-stampede, thundering-herd, caching, performance]
+
+- id: sd-advanced-015
+  version: "1"
+  topic: System Design
+  subtopic: Write-Ahead Log
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the purpose of a Write-Ahead Log (WAL) in databases?"
+  options:
+    - id: a
+      text: "To speed up read queries by pre-computing results"
+      correct: false
+    - id: b
+      text: "To record every change to an append-only log before applying it to the data files, enabling crash recovery"
+      correct: true
+    - id: c
+      text: "To compress old data and archive it to cold storage"
+      correct: false
+    - id: d
+      text: "To replicate data to read replicas in real time"
+      correct: false
+  explanation: "A WAL ensures durability: every modification is first written to a sequential, append-only log on disk. If the system crashes before data files are updated, the WAL can be replayed to recover the committed state. PostgreSQL, SQLite, and many LSM-tree stores rely on WAL for crash safety."
+  doc_url: "https://www.postgresql.org/docs/current/wal-intro.html"
+  tags: [wal, write-ahead-log, durability, database, crash-recovery]
+
+- id: sd-advanced-016
+  version: "1"
+  topic: System Design
+  subtopic: Fan-out
+  difficulty: intermediate
+  type: single_choice
+  question: "In designing a social media news feed, what is the trade-off between fan-out-on-write and fan-out-on-read?"
+  options:
+    - id: a
+      text: "Fan-out-on-write pre-computes feeds at write time (fast reads, expensive writes); fan-out-on-read computes feeds at read time (cheap writes, slower reads)"
+      correct: true
+    - id: b
+      text: "Fan-out-on-write means only one user sees the post; fan-out-on-read broadcasts to everyone"
+      correct: false
+    - id: c
+      text: "Fan-out-on-read stores more data; fan-out-on-write stores less"
+      correct: false
+    - id: d
+      text: "They produce different content in the feed"
+      correct: false
+  explanation: "Fan-out-on-write (push model): when a user posts, the system writes the post to all followers' feed caches immediately. Reads are fast but writes are expensive for users with many followers. Fan-out-on-read (pull model): feeds are assembled at read time by querying followed users' posts. Writes are cheap but reads are slower. Hybrid approaches (push for most users, pull for celebrities) are common."
+  doc_url: "https://blog.bytebytego.com/p/design-a-news-feed-system"
+  tags: [fan-out, news-feed, push, pull, social-media]
+
+- id: sd-advanced-017
+  version: "1"
+  topic: System Design
+  subtopic: Vector Clocks
+  difficulty: advanced
+  type: single_choice
+  question: "What problem do vector clocks solve in a distributed system?"
+  options:
+    - id: a
+      text: "Synchronizing wall-clock time across all nodes"
+      correct: false
+    - id: b
+      text: "Tracking causal ordering of events to detect concurrent updates and conflicts"
+      correct: true
+    - id: c
+      text: "Encrypting timestamps to prevent tampering"
+      correct: false
+    - id: d
+      text: "Compressing event logs to save storage"
+      correct: false
+  explanation: "Vector clocks assign each node a logical counter. When nodes exchange messages, they merge counters. By comparing vector clocks of two events, you can determine if one causally happened before the other or if they are concurrent (conflict). Systems like DynamoDB (originally) used vector clocks for conflict resolution."
+  doc_url: "https://en.wikipedia.org/wiki/Vector_clock"
+  tags: [vector-clocks, causality, distributed-systems, conflict-resolution]
+
+- id: sd-advanced-018
+  version: "1"
+  topic: System Design
+  subtopic: Two-Phase Commit
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which are drawbacks of the two-phase commit (2PC) protocol? (Select all that apply)"
+  options:
+    - id: a
+      text: "It is a blocking protocol — participants hold locks while waiting for the coordinator's decision"
+      correct: true
+    - id: b
+      text: "If the coordinator crashes after sending prepare but before sending commit/abort, participants are stuck"
+      correct: true
+    - id: c
+      text: "It does not guarantee atomicity across participants"
+      correct: false
+    - id: d
+      text: "It increases latency because it requires at least two round-trips between coordinator and participants"
+      correct: true
+  explanation: "2PC guarantees atomicity: all participants commit or all abort. However, it is blocking (participants lock resources during the protocol), vulnerable to coordinator failure (participants remain in doubt), and adds latency (prepare + commit rounds). This is why many distributed systems prefer saga patterns or eventual consistency instead."
+  doc_url: "https://en.wikipedia.org/wiki/Two-phase_commit_protocol"
+  tags: [two-phase-commit, distributed-transactions, atomicity, blocking]
+
+- id: sd-advanced-019
+  version: "1"
+  topic: System Design
+  subtopic: Service Mesh
+  difficulty: intermediate
+  type: single_choice
+  question: "What does a service mesh (e.g., Istio, Linkerd) provide in a microservices architecture?"
+  options:
+    - id: a
+      text: "A shared database for all microservices"
+      correct: false
+    - id: b
+      text: "A dedicated infrastructure layer for handling service-to-service communication, including observability, retries, mTLS, and traffic management"
+      correct: true
+    - id: c
+      text: "A UI framework for building microservice dashboards"
+      correct: false
+    - id: d
+      text: "A container orchestration platform like Kubernetes"
+      correct: false
+  explanation: "A service mesh deploys a sidecar proxy alongside each service instance. These proxies handle cross-cutting networking concerns: mutual TLS, load balancing, retries, circuit breaking, and distributed tracing — without requiring changes to application code. The control plane manages configuration across all proxies."
+  doc_url: "https://istio.io/latest/about/service-mesh/"
+  tags: [service-mesh, istio, sidecar, observability, mtls]
+
+- id: sd-advanced-020
+  version: "1"
+  topic: System Design
+  subtopic: Idempotency
+  difficulty: intermediate
+  type: single_choice
+  question: "Why are idempotency keys important for payment APIs?"
+  options:
+    - id: a
+      text: "They encrypt the payment amount so it cannot be tampered with"
+      correct: false
+    - id: b
+      text: "They allow the client to safely retry a request without risk of the server processing the payment more than once"
+      correct: true
+    - id: c
+      text: "They reduce the size of the HTTP request payload"
+      correct: false
+    - id: d
+      text: "They authenticate the user making the payment"
+      correct: false
+  explanation: "Network failures can leave the client unsure if a request succeeded. An idempotency key (a unique token per operation) lets the client retry safely: the server recognizes the duplicate key and returns the original response instead of processing a second charge. Stripe, PayPal, and most payment APIs support this."
+  doc_url: "https://stripe.com/docs/api/idempotent_requests"
+  tags: [idempotency, payments, api-design, reliability]

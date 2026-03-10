@@ -1,0 +1,215 @@
+- id: rails-adv-001
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Active Record
+  difficulty: advanced
+  type: single_choice
+  question: "What is the N+1 query problem and how does Rails address it?"
+  options:
+    - id: a
+      text: "A problem where N queries are run in a single transaction; solved by using raw SQL"
+      correct: false
+    - id: b
+      text: "A problem where loading N records triggers N additional queries for associations; solved with eager loading via `includes`, `preload`, or `eager_load`"
+      correct: true
+    - id: c
+      text: "A pagination issue where N+1 pages are rendered; solved by the `will_paginate` gem"
+      correct: false
+    - id: d
+      text: "A migration conflict where N+1 migrations run simultaneously; solved by locking"
+      correct: false
+  explanation: "The N+1 problem occurs when iterating over records and lazily loading associations, causing one extra query per record. `includes(:association)` eager-loads data in one or two queries. `bullet` gem can detect N+1 issues in development."
+  doc_url: "https://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations"
+  tags: [n-plus-one, eager-loading, performance, active-record]
+
+- id: rails-adv-002
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Background Jobs
+  difficulty: advanced
+  type: single_choice
+  question: "What is Active Job in Rails?"
+  options:
+    - id: a
+      text: "A framework for scheduling cron jobs on the server"
+      correct: false
+    - id: b
+      text: "A unified interface for declaring background jobs that can run on various queuing backends like Sidekiq, Resque, or Solid Queue"
+      correct: true
+    - id: c
+      text: "A tool for monitoring server processes"
+      correct: false
+    - id: d
+      text: "A testing framework for running jobs in parallel"
+      correct: false
+  explanation: "Active Job provides a standard interface for background job processing. You write jobs once and can switch backends (Sidekiq, Resque, Solid Queue, etc.) via configuration. It integrates with Action Mailer for async emails and supports retries, callbacks, and queue priority."
+  doc_url: "https://guides.rubyonrails.org/active_job_basics.html"
+  tags: [active-job, background-jobs, sidekiq, queues]
+
+- id: rails-adv-003
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Concerns
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this concern provide?"
+  code: |
+    module Archivable
+      extend ActiveSupport::Concern
+
+      included do
+        scope :archived, -> { where(archived: true) }
+        scope :active, -> { where(archived: false) }
+      end
+
+      def archive!
+        update!(archived: true, archived_at: Time.current)
+      end
+    end
+
+    class Post < ApplicationRecord
+      include Archivable
+    end
+  options:
+    - id: a
+      text: "Only class-level scopes for querying archived/active records"
+      correct: false
+    - id: b
+      text: "Both class-level scopes (Post.archived, Post.active) and an instance method (post.archive!) to any model that includes it"
+      correct: true
+    - id: c
+      text: "A database migration to add archived columns"
+      correct: false
+    - id: d
+      text: "A controller filter that prevents access to archived records"
+      correct: false
+  explanation: "ActiveSupport::Concern is a pattern for extracting shared model behavior. The `included` block runs in the class context (defining scopes), while regular methods become instance methods. This allows clean reuse across multiple models."
+  doc_url: "https://api.rubyonrails.org/classes/ActiveSupport/Concern.html"
+  tags: [concerns, modules, code-reuse, scopes]
+
+- id: rails-adv-004
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Security
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which security protections does Rails provide out of the box? (Select all that apply)"
+  options:
+    - id: a
+      text: "CSRF protection via authenticity tokens"
+      correct: true
+    - id: b
+      text: "SQL injection prevention through parameterized queries in Active Record"
+      correct: true
+    - id: c
+      text: "XSS protection by escaping HTML output in views by default"
+      correct: true
+    - id: d
+      text: "Automatic DDoS protection at the application layer"
+      correct: false
+  explanation: "Rails includes CSRF tokens in forms, uses parameterized queries to prevent SQL injection, and auto-escapes HTML in ERB views to prevent XSS. DDoS protection is typically handled at the infrastructure/CDN level, not by Rails itself."
+  doc_url: "https://guides.rubyonrails.org/security.html"
+  tags: [security, csrf, xss, sql-injection]
+
+- id: rails-adv-005
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Caching
+  difficulty: advanced
+  type: single_choice
+  question: "What is Russian Doll caching in Rails?"
+  options:
+    - id: a
+      text: "A technique where the entire page is cached as a single unit"
+      correct: false
+    - id: b
+      text: "Nested fragment caching where inner cached fragments can be reused even when outer fragments expire"
+      correct: true
+    - id: c
+      text: "A CDN caching strategy specific to Russian hosting providers"
+      correct: false
+    - id: d
+      text: "Caching database queries in nested transactions"
+      correct: false
+  explanation: "Russian Doll caching nests `cache` blocks in views. When an inner fragment (e.g., a single comment) changes, only its cache and direct parents are regenerated — sibling caches remain intact. Combined with `touch: true` on associations, this provides efficient, granular cache invalidation."
+  doc_url: "https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching"
+  tags: [caching, fragment-caching, performance]
+
+- id: rails-adv-006
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Testing
+  difficulty: advanced
+  type: single_choice
+  question: "What is the difference between `let` and `let!` in RSpec (commonly used with Rails)?"
+  options:
+    - id: a
+      text: "`let` creates a global variable; `let!` creates a local variable"
+      correct: false
+    - id: b
+      text: "`let` is lazily evaluated (created when first referenced); `let!` is eagerly evaluated (created before each test)"
+      correct: true
+    - id: c
+      text: "`let!` raises an error if the value is nil; `let` does not"
+      correct: false
+    - id: d
+      text: "There is no difference; the `!` is just a naming convention"
+      correct: false
+  explanation: "`let` defines a memoized helper that is only evaluated when first called in a test. `let!` forces evaluation before each example runs, which is useful when the side effect of creating the object (e.g., a database record) is needed regardless of whether it's referenced."
+  doc_url: "https://rspec.info/features/3-12/rspec-core/helper-methods/let/"
+  tags: [rspec, testing, let, lazy-evaluation]
+
+- id: rails-adv-007
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Active Record
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this query chain produce?"
+  code: |
+    User.joins(:posts)
+        .where(posts: { published: true })
+        .group(:id)
+        .having("COUNT(posts.id) > 5")
+        .order("COUNT(posts.id) DESC")
+        .limit(10)
+  options:
+    - id: a
+      text: "The 10 most recent users who have published posts"
+      correct: false
+    - id: b
+      text: "The top 10 users with more than 5 published posts, ordered by post count descending"
+      correct: true
+    - id: c
+      text: "All users with exactly 5 published posts"
+      correct: false
+    - id: d
+      text: "The first 10 published posts grouped by user"
+      correct: false
+  explanation: "`joins` performs an INNER JOIN with posts, `where` filters to published posts, `group` and `having` keep only users with more than 5, and `order`/`limit` return the top 10 by count. This demonstrates Active Record's composable query interface."
+  doc_url: "https://guides.rubyonrails.org/active_record_querying.html"
+  tags: [active-record, querying, joins, group, having]
+
+- id: rails-adv-008
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Middleware
+  difficulty: advanced
+  type: single_choice
+  question: "What is Rack in the context of Ruby on Rails?"
+  options:
+    - id: a
+      text: "A package manager for Ruby gems"
+      correct: false
+    - id: b
+      text: "A minimal interface between web servers and Ruby web frameworks, providing a middleware stack that Rails is built on"
+      correct: true
+    - id: c
+      text: "A testing framework for API endpoints"
+      correct: false
+    - id: d
+      text: "A deployment tool for Rails applications"
+      correct: false
+  explanation: "Rack provides a standard interface (a Ruby object responding to `call` with an env hash, returning [status, headers, body]). Rails sits on top of Rack, and its middleware stack handles concerns like sessions, cookies, CSRF, logging, and static files before requests reach your controllers."
+  doc_url: "https://guides.rubyonrails.org/rails_on_rack.html"
+  tags: [rack, middleware, web-servers, architecture]

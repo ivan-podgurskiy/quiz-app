@@ -1,0 +1,252 @@
+- id: rails-basics-001
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: MVC
+  difficulty: beginner
+  type: single_choice
+  question: "What architectural pattern does Ruby on Rails follow?"
+  options:
+    - id: a
+      text: "MVVM (Model-View-ViewModel)"
+      correct: false
+    - id: b
+      text: "MVC (Model-View-Controller)"
+      correct: true
+    - id: c
+      text: "MVP (Model-View-Presenter)"
+      correct: false
+    - id: d
+      text: "Microservices"
+      correct: false
+  explanation: "Rails follows the MVC pattern: Models handle data and business logic, Views present information to the user, and Controllers process requests, interact with Models, and render Views."
+  doc_url: "https://guides.rubyonrails.org/getting_started.html"
+  tags: [mvc, architecture, fundamentals]
+
+- id: rails-basics-002
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Convention over Configuration
+  difficulty: beginner
+  type: single_choice
+  question: "What does 'Convention over Configuration' mean in Rails?"
+  options:
+    - id: a
+      text: "You must follow strict coding conventions enforced by a linter"
+      correct: false
+    - id: b
+      text: "Rails provides sensible defaults so developers only need to specify unconventional aspects of their application"
+      correct: true
+    - id: c
+      text: "Configuration files are automatically generated from code conventions"
+      correct: false
+    - id: d
+      text: "All configuration must be done through environment variables"
+      correct: false
+  explanation: "Convention over Configuration (CoC) is a core Rails philosophy. For example, a `Post` model automatically maps to a `posts` database table, and `PostsController` serves routes for `/posts`. You only configure what deviates from convention."
+  doc_url: "https://guides.rubyonrails.org/getting_started.html#what-is-rails-questionmark"
+  tags: [conventions, philosophy, fundamentals]
+
+- id: rails-basics-003
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Active Record
+  difficulty: beginner
+  type: single_choice
+  question: "What is Active Record in Rails?"
+  options:
+    - id: a
+      text: "A JavaScript library for frontend state management"
+      correct: false
+    - id: b
+      text: "The ORM layer that maps Ruby classes to database tables and provides methods for querying and manipulating data"
+      correct: true
+    - id: c
+      text: "A logging framework that records all database queries"
+      correct: false
+    - id: d
+      text: "A caching mechanism for database results"
+      correct: false
+  explanation: "Active Record is Rails' Object-Relational Mapping (ORM). Each model class maps to a database table, each instance to a row, and each attribute to a column. It provides a rich API for CRUD operations, associations, validations, and query building."
+  doc_url: "https://guides.rubyonrails.org/active_record_basics.html"
+  tags: [active-record, orm, database]
+
+- id: rails-basics-004
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Migrations
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which statements about Rails migrations are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Migrations allow you to evolve the database schema over time using Ruby code"
+      correct: true
+    - id: b
+      text: "Migrations can be rolled back with `rails db:rollback`"
+      correct: true
+    - id: c
+      text: "Migrations are executed in the order they were created, based on their timestamp"
+      correct: true
+    - id: d
+      text: "Migrations must be written in raw SQL"
+      correct: false
+  explanation: "Migrations are Ruby classes that use a DSL to define schema changes. They are timestamped, versioned, reversible, and database-agnostic. Rails tracks which migrations have run in the `schema_migrations` table."
+  doc_url: "https://guides.rubyonrails.org/active_record_migrations.html"
+  tags: [migrations, database, schema]
+
+- id: rails-basics-005
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Routing
+  difficulty: beginner
+  type: code_snippet
+  question: "What does this routing declaration generate?"
+  code: |
+    # config/routes.rb
+    Rails.application.routes.draw do
+      resources :articles
+    end
+  options:
+    - id: a
+      text: "Only a GET /articles route"
+      correct: false
+    - id: b
+      text: "All seven RESTful routes: index, show, new, create, edit, update, destroy"
+      correct: true
+    - id: c
+      text: "Only GET /articles and POST /articles routes"
+      correct: false
+    - id: d
+      text: "A single route that handles all HTTP methods"
+      correct: false
+  explanation: "`resources :articles` generates seven RESTful routes mapping to standard controller actions: GET /articles (index), GET /articles/:id (show), GET /articles/new (new), POST /articles (create), GET /articles/:id/edit (edit), PATCH /articles/:id (update), DELETE /articles/:id (destroy)."
+  doc_url: "https://guides.rubyonrails.org/routing.html#crud-verbs-and-actions"
+  tags: [routing, rest, resources]
+
+- id: rails-basics-006
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Active Record
+  difficulty: intermediate
+  type: single_choice
+  question: "What does `has_many :comments, dependent: :destroy` do on a model?"
+  options:
+    - id: a
+      text: "Creates a `comments` column in the model's table"
+      correct: false
+    - id: b
+      text: "Declares a one-to-many association and automatically deletes associated comments when the parent is destroyed"
+      correct: true
+    - id: c
+      text: "Validates that the model must have at least one comment"
+      correct: false
+    - id: d
+      text: "Creates a join table between the model and comments"
+      correct: false
+  explanation: "`has_many` declares a one-to-many association. The `dependent: :destroy` option ensures associated comments are destroyed when the parent record is deleted, preventing orphaned records in the database."
+  doc_url: "https://guides.rubyonrails.org/association_basics.html#has-many-association-reference"
+  tags: [associations, has-many, dependent-destroy]
+
+- id: rails-basics-007
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Validations
+  difficulty: intermediate
+  type: code_snippet
+  question: "What happens when you try to save this record?"
+  code: |
+    class User < ApplicationRecord
+      validates :email, presence: true, uniqueness: true
+      validates :age, numericality: { greater_than: 0 }
+    end
+
+    user = User.new(email: nil, age: -5)
+    user.save
+  options:
+    - id: a
+      text: "The record is saved successfully"
+      correct: false
+    - id: b
+      text: "Returns false and populates user.errors with validation messages"
+      correct: true
+    - id: c
+      text: "Raises an ActiveRecord::RecordInvalid exception"
+      correct: false
+    - id: d
+      text: "Saves the record but logs a warning"
+      correct: false
+  explanation: "`save` runs validations and returns `false` if any fail (without raising). The errors are accessible via `user.errors`. Use `save!` to raise `ActiveRecord::RecordInvalid` instead. Here, both `email` (nil) and `age` (-5) fail their validations."
+  doc_url: "https://guides.rubyonrails.org/active_record_validations.html"
+  tags: [validations, active-record, error-handling]
+
+- id: rails-basics-008
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Controllers
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the purpose of Strong Parameters in Rails?"
+  options:
+    - id: a
+      text: "To encrypt sensitive parameters in the URL"
+      correct: false
+    - id: b
+      text: "To whitelist which parameters are permitted for mass assignment, preventing unwanted attributes from being set"
+      correct: true
+    - id: c
+      text: "To validate that parameters match specific data types"
+      correct: false
+    - id: d
+      text: "To compress large parameter payloads for performance"
+      correct: false
+  explanation: "Strong Parameters require you to explicitly permit which attributes can be mass-assigned (e.g., `params.require(:user).permit(:name, :email)`). This prevents mass assignment vulnerabilities where attackers could set unauthorized fields like `admin: true`."
+  doc_url: "https://guides.rubyonrails.org/action_controller_overview.html#strong-parameters"
+  tags: [strong-parameters, security, controllers]
+
+- id: rails-basics-009
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Asset Pipeline
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the Rails asset pipeline do?"
+  options:
+    - id: a
+      text: "Manages database connection pooling"
+      correct: false
+    - id: b
+      text: "Compiles, concatenates, minifies, and fingerprints CSS and JavaScript assets for production"
+      correct: true
+    - id: c
+      text: "Routes API requests to the correct controller"
+      correct: false
+    - id: d
+      text: "Handles file uploads and storage"
+      correct: false
+  explanation: "The asset pipeline (Sprockets or Propshaft) processes frontend assets. It concatenates files to reduce HTTP requests, minifies to reduce file size, and adds fingerprints (digests) for cache busting. This ensures efficient asset delivery in production."
+  doc_url: "https://guides.rubyonrails.org/asset_pipeline.html"
+  tags: [asset-pipeline, frontend, performance]
+
+- id: rails-basics-010
+  version: "1"
+  topic: Ruby on Rails
+  subtopic: Callbacks
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which are valid Active Record lifecycle callbacks? (Select all that apply)"
+  options:
+    - id: a
+      text: "before_save"
+      correct: true
+    - id: b
+      text: "after_create"
+      correct: true
+    - id: c
+      text: "around_destroy"
+      correct: true
+    - id: d
+      text: "before_route"
+      correct: false
+  explanation: "Active Record provides callbacks for create, update, save, destroy, validate, find, and touch events with before_, after_, and around_ prefixes. There is no `before_route` — routing is handled by the router, not the model layer."
+  doc_url: "https://guides.rubyonrails.org/active_record_callbacks.html"
+  tags: [callbacks, lifecycle, active-record]

@@ -1,0 +1,270 @@
+- id: ruby-basics-001
+  version: "1"
+  topic: Ruby
+  subtopic: Objects
+  difficulty: beginner
+  type: single_choice
+  question: "In Ruby, which of the following is true?"
+  options:
+    - id: a
+      text: "Only classes and modules are objects"
+      correct: false
+    - id: b
+      text: "Everything is an object, including integers and nil"
+      correct: true
+    - id: c
+      text: "Primitive types like integers are not objects"
+      correct: false
+    - id: d
+      text: "Only instances of user-defined classes are objects"
+      correct: false
+  explanation: "Ruby is a purely object-oriented language. Everything is an object — integers, strings, nil, true, false, classes, and modules all have methods and respond to messages. For example, `42.even?` returns `true`."
+  doc_url: "https://ruby-doc.org/core/Object.html"
+  tags: [objects, fundamentals]
+
+- id: ruby-basics-002
+  version: "1"
+  topic: Ruby
+  subtopic: Symbols
+  difficulty: beginner
+  type: single_choice
+  question: "What is the key difference between a Symbol and a String in Ruby?"
+  options:
+    - id: a
+      text: "Symbols can contain spaces; Strings cannot"
+      correct: false
+    - id: b
+      text: "Symbols are immutable and unique in memory; Strings are mutable and can have multiple instances with the same content"
+      correct: true
+    - id: c
+      text: "Strings are faster than Symbols for comparison"
+      correct: false
+    - id: d
+      text: "There is no difference; they are interchangeable"
+      correct: false
+  explanation: "Symbols like `:name` are immutable and only one instance exists in memory for each symbol name, making them ideal for hash keys and identifiers. Strings are mutable, and each occurrence allocates a new object (unless frozen)."
+  doc_url: "https://ruby-doc.org/core/Symbol.html"
+  tags: [symbols, strings, memory]
+
+- id: ruby-basics-003
+  version: "1"
+  topic: Ruby
+  subtopic: Blocks
+  difficulty: beginner
+  type: single_choice
+  question: "What is a block in Ruby?"
+  options:
+    - id: a
+      text: "A standalone function defined with the `def` keyword"
+      correct: false
+    - id: b
+      text: "A chunk of code enclosed in `do...end` or `{...}` that can be passed to a method"
+      correct: true
+    - id: c
+      text: "A class definition"
+      correct: false
+    - id: d
+      text: "A module used for namespacing"
+      correct: false
+  explanation: "Blocks are anonymous pieces of code that can be passed to methods. They are enclosed in `do...end` (multi-line) or `{...}` (single-line). Methods receive blocks implicitly and invoke them with `yield`."
+  doc_url: "https://ruby-doc.org/core/Proc.html"
+  tags: [blocks, iterators, closures]
+
+- id: ruby-basics-004
+  version: "1"
+  topic: Ruby
+  subtopic: Collections
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are valid ways to create an Array in Ruby? (Select all that apply)"
+  options:
+    - id: a
+      text: "[1, 2, 3]"
+      correct: true
+    - id: b
+      text: "Array.new(3, 0)"
+      correct: true
+    - id: c
+      text: "%w[foo bar baz]"
+      correct: true
+    - id: d
+      text: "array(1, 2, 3)"
+      correct: false
+  explanation: "Arrays can be created with literal brackets `[]`, `Array.new` with a size and default value, or percent literals like `%w[...]` which creates an array of strings. There is no standalone `array()` function."
+  doc_url: "https://ruby-doc.org/core/Array.html"
+  tags: [arrays, collections, literals]
+
+- id: ruby-basics-005
+  version: "1"
+  topic: Ruby
+  subtopic: Methods
+  difficulty: beginner
+  type: code_snippet
+  question: "What does this code output?"
+  code: |
+    def greet(name = "World")
+      "Hello, #{name}!"
+    end
+
+    puts greet
+    puts greet("Ruby")
+  options:
+    - id: a
+      text: |
+        Hello, !
+        Hello, Ruby!
+      correct: false
+    - id: b
+      text: |
+        Hello, World!
+        Hello, Ruby!
+      correct: true
+    - id: c
+      text: |
+        Hello, #{name}!
+        Hello, Ruby!
+      correct: false
+    - id: d
+      text: "ArgumentError"
+      correct: false
+  explanation: "Ruby methods support default parameter values. When `greet` is called without arguments, `name` defaults to `\"World\"`. String interpolation with `#{}` evaluates the expression inside the string."
+  doc_url: "https://docs.ruby-lang.org/en/master/syntax/methods_rdoc.html"
+  tags: [methods, default-parameters, string-interpolation]
+
+- id: ruby-basics-006
+  version: "1"
+  topic: Ruby
+  subtopic: Conditionals
+  difficulty: beginner
+  type: single_choice
+  question: "In Ruby, which values are falsy?"
+  options:
+    - id: a
+      text: "false, nil, 0, and empty string"
+      correct: false
+    - id: b
+      text: "Only false and nil"
+      correct: true
+    - id: c
+      text: "false, nil, 0, empty string, and empty array"
+      correct: false
+    - id: d
+      text: "Only false"
+      correct: false
+  explanation: "Ruby has only two falsy values: `false` and `nil`. Everything else is truthy, including `0`, `\"\"` (empty string), and `[]` (empty array). This differs from many other languages."
+  doc_url: "https://docs.ruby-lang.org/en/master/syntax/control_expressions_rdoc.html"
+  tags: [conditionals, truthiness]
+
+- id: ruby-basics-007
+  version: "1"
+  topic: Ruby
+  subtopic: Classes
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this code output?"
+  code: |
+    class Dog
+      attr_accessor :name
+
+      def initialize(name)
+        @name = name
+      end
+
+      def speak
+        "#{@name} says Woof!"
+      end
+    end
+
+    dog = Dog.new("Rex")
+    dog.name = "Buddy"
+    puts dog.speak
+  options:
+    - id: a
+      text: "Rex says Woof!"
+      correct: false
+    - id: b
+      text: "Buddy says Woof!"
+      correct: true
+    - id: c
+      text: "NoMethodError"
+      correct: false
+    - id: d
+      text: "Dog says Woof!"
+      correct: false
+  explanation: "`attr_accessor :name` generates both getter and setter methods. The dog is initialized with `\"Rex\"`, but `dog.name = \"Buddy\"` changes the `@name` instance variable. `speak` then reads the updated value."
+  doc_url: "https://ruby-doc.org/core/Module.html#method-i-attr_accessor"
+  tags: [classes, attr-accessor, instance-variables]
+
+- id: ruby-basics-008
+  version: "1"
+  topic: Ruby
+  subtopic: Enumerable
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this code return?"
+  code: |
+    [1, 2, 3, 4, 5].select(&:odd?).map { |n| n ** 2 }
+  options:
+    - id: a
+      text: "[1, 4, 9, 16, 25]"
+      correct: false
+    - id: b
+      text: "[1, 9, 25]"
+      correct: true
+    - id: c
+      text: "[2, 4]"
+      correct: false
+    - id: d
+      text: "[1, 3, 5]"
+      correct: false
+  explanation: "`select(&:odd?)` filters to odd numbers `[1, 3, 5]`, then `map` squares each one to produce `[1, 9, 25]`. The `&:odd?` syntax converts the symbol to a proc, equivalent to `{ |n| n.odd? }`."
+  doc_url: "https://ruby-doc.org/core/Enumerable.html"
+  tags: [enumerable, select, map, symbol-to-proc]
+
+- id: ruby-basics-009
+  version: "1"
+  topic: Ruby
+  subtopic: Hashes
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which statements about Ruby Hashes are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Hashes maintain insertion order (since Ruby 1.9)"
+      correct: true
+    - id: b
+      text: "Symbol keys can use the shorthand syntax `{ name: \"Ruby\" }`"
+      correct: true
+    - id: c
+      text: "Accessing a missing key raises a KeyError by default"
+      correct: false
+    - id: d
+      text: "Hashes can use any object as a key"
+      correct: true
+  explanation: "Ruby Hashes are ordered (since 1.9), support any object as a key, and return `nil` for missing keys by default (not KeyError, unless using `fetch`). The `key: value` syntax is shorthand for `key: => value` with symbol keys."
+  doc_url: "https://ruby-doc.org/core/Hash.html"
+  tags: [hashes, data-structures, symbols]
+
+- id: ruby-basics-010
+  version: "1"
+  topic: Ruby
+  subtopic: Exception Handling
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the correct syntax for exception handling in Ruby?"
+  options:
+    - id: a
+      text: "try/catch/finally"
+      correct: false
+    - id: b
+      text: "begin/rescue/ensure"
+      correct: true
+    - id: c
+      text: "do/rescue/end"
+      correct: false
+    - id: d
+      text: "handle/except/always"
+      correct: false
+  explanation: "Ruby uses `begin/rescue/ensure/end` for exception handling. `rescue` catches exceptions (like `catch` in other languages), and `ensure` runs cleanup code regardless of whether an exception was raised (like `finally`)."
+  doc_url: "https://docs.ruby-lang.org/en/master/syntax/exceptions_rdoc.html"
+  tags: [exceptions, error-handling, control-flow]

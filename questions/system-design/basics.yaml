@@ -1,0 +1,479 @@
+- id: sd-basics-001
+  version: "1"
+  topic: System Design
+  subtopic: Load Balancing
+  difficulty: beginner
+  type: single_choice
+  question: "What is the primary purpose of a load balancer?"
+  options:
+    - id: a
+      text: "Encrypting traffic between clients and servers"
+      correct: false
+    - id: b
+      text: "Distributing incoming requests across multiple servers to avoid overloading any single one"
+      correct: true
+    - id: c
+      text: "Storing frequently accessed data in memory"
+      correct: false
+    - id: d
+      text: "Compressing HTTP responses to reduce bandwidth"
+      correct: false
+  explanation: "A load balancer sits between clients and a pool of servers, routing each request so that no single server becomes a bottleneck. Common algorithms include round-robin, least connections, and weighted distribution."
+  doc_url: "https://www.nginx.com/resources/glossary/load-balancing/"
+  tags: [load-balancing, scalability]
+
+- id: sd-basics-002
+  version: "1"
+  topic: System Design
+  subtopic: Caching
+  difficulty: beginner
+  type: single_choice
+  question: "In a cache-aside (lazy loading) strategy, when is data written to the cache?"
+  options:
+    - id: a
+      text: "Whenever the database is updated"
+      correct: false
+    - id: b
+      text: "Only on a cache miss — the application reads from the database and then populates the cache"
+      correct: true
+    - id: c
+      text: "At fixed time intervals by a background job"
+      correct: false
+    - id: d
+      text: "Before every database write"
+      correct: false
+  explanation: "In cache-aside, the application checks the cache first. On a miss, it fetches from the database, stores the result in the cache, and returns it. This keeps the cache logic in the application layer and only caches data that is actually requested."
+  doc_url: "https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"
+  tags: [caching, cache-aside, lazy-loading]
+
+- id: sd-basics-003
+  version: "1"
+  topic: System Design
+  subtopic: CAP Theorem
+  difficulty: beginner
+  type: single_choice
+  question: "What does the CAP theorem state about distributed systems?"
+  options:
+    - id: a
+      text: "A system can be simultaneously Consistent, Available, and Partition-tolerant"
+      correct: false
+    - id: b
+      text: "A system can guarantee at most two of Consistency, Availability, and Partition Tolerance at the same time"
+      correct: true
+    - id: c
+      text: "Caching, Aggregation, and Partitioning are the three pillars of scalability"
+      correct: false
+    - id: d
+      text: "Consensus algorithms always sacrifice availability"
+      correct: false
+  explanation: "The CAP theorem (Brewer's theorem) states that during a network partition, a distributed system must choose between consistency (every read sees the latest write) and availability (every request gets a response). You cannot have all three simultaneously."
+  doc_url: "https://en.wikipedia.org/wiki/CAP_theorem"
+  tags: [cap-theorem, distributed-systems, consistency, availability]
+
+- id: sd-basics-004
+  version: "1"
+  topic: System Design
+  subtopic: Database Scaling
+  difficulty: beginner
+  type: single_choice
+  question: "What is the difference between vertical and horizontal scaling?"
+  options:
+    - id: a
+      text: "Vertical scaling adds more machines; horizontal scaling upgrades a single machine"
+      correct: false
+    - id: b
+      text: "Vertical scaling upgrades a single machine (more CPU/RAM); horizontal scaling adds more machines"
+      correct: true
+    - id: c
+      text: "Vertical scaling is for databases; horizontal scaling is for application servers only"
+      correct: false
+    - id: d
+      text: "They are two names for the same approach"
+      correct: false
+  explanation: "Vertical scaling (scale up) means adding more resources to a single node. Horizontal scaling (scale out) means adding more nodes. Horizontal scaling is generally preferred for large systems because it avoids single-machine hardware limits and single points of failure."
+  doc_url: "https://en.wikipedia.org/wiki/Scalability#Horizontal_(scale_out)_and_vertical_scaling_(scale_up)"
+  tags: [scaling, vertical, horizontal]
+
+- id: sd-basics-005
+  version: "1"
+  topic: System Design
+  subtopic: CDN
+  difficulty: beginner
+  type: single_choice
+  question: "What is the main benefit of using a Content Delivery Network (CDN)?"
+  options:
+    - id: a
+      text: "It replaces the origin server entirely"
+      correct: false
+    - id: b
+      text: "It serves content from edge servers geographically close to the user, reducing latency"
+      correct: true
+    - id: c
+      text: "It encrypts all data at rest in the origin database"
+      correct: false
+    - id: d
+      text: "It automatically scales the application's business logic"
+      correct: false
+  explanation: "A CDN caches static (and sometimes dynamic) content at points of presence (PoPs) around the world. Users are served from the nearest edge server, dramatically reducing latency and offloading traffic from the origin."
+  doc_url: "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  tags: [cdn, latency, edge]
+
+- id: sd-basics-006
+  version: "1"
+  topic: System Design
+  subtopic: Database Replication
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which are valid benefits of database read replicas? (Select all that apply)"
+  options:
+    - id: a
+      text: "Offloading read queries from the primary to reduce its load"
+      correct: true
+    - id: b
+      text: "Providing a failover target if the primary goes down"
+      correct: true
+    - id: c
+      text: "Eliminating the need for backups entirely"
+      correct: false
+    - id: d
+      text: "Improving read throughput by distributing queries across multiple nodes"
+      correct: true
+  explanation: "Read replicas receive a copy of the primary's data via replication. They absorb read traffic, improve read throughput, and can be promoted to primary during failures. They do not replace proper backups — replication propagates deletes and corruption too."
+  doc_url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html"
+  tags: [replication, database, read-replicas, availability]
+
+- id: sd-basics-007
+  version: "1"
+  topic: System Design
+  subtopic: Message Queues
+  difficulty: beginner
+  type: single_choice
+  question: "Why would you introduce a message queue (e.g., Kafka, RabbitMQ) between two services?"
+  options:
+    - id: a
+      text: "To make synchronous calls faster"
+      correct: false
+    - id: b
+      text: "To decouple services, absorb traffic spikes, and allow the consumer to process at its own pace"
+      correct: true
+    - id: c
+      text: "To replace the database for persistent storage"
+      correct: false
+    - id: d
+      text: "To encrypt communication between services"
+      correct: false
+  explanation: "Message queues decouple producers from consumers. The producer publishes a message and moves on; the consumer processes it asynchronously. This smooths out load spikes, improves fault tolerance (messages survive consumer downtime), and lets services evolve independently."
+  doc_url: "https://aws.amazon.com/message-queue/"
+  tags: [message-queue, async, decoupling]
+
+- id: sd-basics-008
+  version: "1"
+  topic: System Design
+  subtopic: API Design
+  difficulty: beginner
+  type: single_choice
+  question: "In REST API design, which HTTP method is idempotent and used to update or replace a resource?"
+  options:
+    - id: a
+      text: "POST"
+      correct: false
+    - id: b
+      text: "PATCH"
+      correct: false
+    - id: c
+      text: "PUT"
+      correct: true
+    - id: d
+      text: "DELETE"
+      correct: false
+  explanation: "PUT replaces the entire resource at a given URI and is idempotent — calling it multiple times with the same body produces the same result. POST creates a new resource (not idempotent). PATCH partially updates a resource and is not guaranteed idempotent."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT"
+  tags: [rest, api, http, idempotency]
+
+- id: sd-basics-009
+  version: "1"
+  topic: System Design
+  subtopic: Rate Limiting
+  difficulty: intermediate
+  type: single_choice
+  question: "Which rate-limiting algorithm uses a counter that resets at fixed intervals (e.g., 100 requests per minute)?"
+  options:
+    - id: a
+      text: "Token bucket"
+      correct: false
+    - id: b
+      text: "Fixed window counter"
+      correct: true
+    - id: c
+      text: "Leaky bucket"
+      correct: false
+    - id: d
+      text: "Sliding window log"
+      correct: false
+  explanation: "The fixed window counter divides time into fixed windows (e.g., 1 minute) and allows a maximum number of requests per window. It is simple but can allow bursts at window boundaries. Token bucket and leaky bucket smooth out traffic; sliding window log tracks each request timestamp for precision."
+  doc_url: "https://blog.bytebytego.com/p/rate-limiting-fundamentals"
+  tags: [rate-limiting, fixed-window, algorithms]
+
+- id: sd-basics-010
+  version: "1"
+  topic: System Design
+  subtopic: Microservices
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which are common trade-offs of adopting a microservices architecture over a monolith? (Select all that apply)"
+  options:
+    - id: a
+      text: "Services can be deployed and scaled independently"
+      correct: true
+    - id: b
+      text: "Operational complexity increases (networking, observability, deployments)"
+      correct: true
+    - id: c
+      text: "Data consistency across services becomes harder to enforce"
+      correct: true
+    - id: d
+      text: "Microservices always result in lower overall latency"
+      correct: false
+  explanation: "Microservices enable independent deployment, scaling, and technology choices per service. The trade-offs include increased operational overhead, the challenge of distributed data consistency (no single ACID transaction across services), and potentially higher latency due to inter-service network calls."
+  doc_url: "https://martinfowler.com/articles/microservices.html"
+  tags: [microservices, monolith, trade-offs, architecture]
+
+- id: sd-basics-011
+  version: "1"
+  topic: System Design
+  subtopic: DNS
+  difficulty: beginner
+  type: single_choice
+  question: "What role does DNS play when a user types a URL into their browser?"
+  options:
+    - id: a
+      text: "It compresses the web page for faster delivery"
+      correct: false
+    - id: b
+      text: "It translates the human-readable domain name into an IP address the browser can connect to"
+      correct: true
+    - id: c
+      text: "It authenticates the user's session with the server"
+      correct: false
+    - id: d
+      text: "It caches the HTML of previously visited pages"
+      correct: false
+  explanation: "DNS (Domain Name System) is the internet's phone book. It resolves domain names like example.com to IP addresses like 93.184.216.34 through a hierarchy of nameservers (root, TLD, authoritative). Results are cached at multiple levels (browser, OS, ISP) to reduce lookup latency."
+  doc_url: "https://www.cloudflare.com/learning/dns/what-is-dns/"
+  tags: [dns, networking, name-resolution]
+
+- id: sd-basics-012
+  version: "1"
+  topic: System Design
+  subtopic: Reverse Proxy
+  difficulty: beginner
+  type: single_choice
+  question: "What is a reverse proxy?"
+  options:
+    - id: a
+      text: "A proxy that sits in front of clients to mask their IP addresses"
+      correct: false
+    - id: b
+      text: "A server that sits in front of backend servers and forwards client requests to them"
+      correct: true
+    - id: c
+      text: "A tool that reverses the order of HTTP request headers"
+      correct: false
+    - id: d
+      text: "A DNS server that resolves names in reverse order"
+      correct: false
+  explanation: "A reverse proxy (e.g., Nginx, HAProxy) sits between clients and origin servers. It can provide load balancing, SSL termination, caching, and compression. Clients only see the proxy's address, shielding backend servers from direct exposure."
+  doc_url: "https://www.nginx.com/resources/glossary/reverse-proxy-server/"
+  tags: [reverse-proxy, networking, load-balancing]
+
+- id: sd-basics-013
+  version: "1"
+  topic: System Design
+  subtopic: SQL vs NoSQL
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which statements correctly describe differences between SQL and NoSQL databases? (Select all that apply)"
+  options:
+    - id: a
+      text: "SQL databases enforce a fixed schema; many NoSQL databases allow flexible or schema-less data"
+      correct: true
+    - id: b
+      text: "SQL databases support ACID transactions natively; NoSQL databases often trade strict ACID for scalability"
+      correct: true
+    - id: c
+      text: "NoSQL databases cannot handle relational data at all"
+      correct: false
+    - id: d
+      text: "SQL databases use structured query language; NoSQL databases use various query models (document, key-value, graph, column-family)"
+      correct: true
+  explanation: "SQL databases (PostgreSQL, MySQL) provide strict schemas, ACID transactions, and powerful joins. NoSQL databases (MongoDB, Cassandra, DynamoDB, Redis) offer flexible schemas and horizontal scalability, but may relax consistency guarantees. The choice depends on data access patterns, consistency needs, and scale requirements."
+  doc_url: "https://www.mongodb.com/nosql-explained/nosql-vs-sql"
+  tags: [sql, nosql, database, schema]
+
+- id: sd-basics-014
+  version: "1"
+  topic: System Design
+  subtopic: Database Indexing
+  difficulty: beginner
+  type: single_choice
+  question: "What is the primary purpose of a database index?"
+  options:
+    - id: a
+      text: "To compress data and save disk space"
+      correct: false
+    - id: b
+      text: "To speed up read queries by allowing the database to locate rows without scanning the entire table"
+      correct: true
+    - id: c
+      text: "To enforce unique constraints on all columns"
+      correct: false
+    - id: d
+      text: "To replicate data across multiple servers"
+      correct: false
+  explanation: "An index is a data structure (commonly a B-tree or LSM-tree) that maps column values to row locations. It speeds up WHERE clauses, JOINs, and ORDER BY at the cost of additional storage and slower writes (the index must be updated on every insert/update/delete)."
+  doc_url: "https://use-the-index-luke.com/"
+  tags: [indexing, database, b-tree, performance]
+
+- id: sd-basics-015
+  version: "1"
+  topic: System Design
+  subtopic: WebSockets
+  difficulty: beginner
+  type: single_choice
+  question: "What advantage do WebSockets offer over traditional HTTP request-response for real-time applications?"
+  options:
+    - id: a
+      text: "WebSockets use less memory on the server"
+      correct: false
+    - id: b
+      text: "WebSockets provide a persistent, full-duplex connection so the server can push data to the client without polling"
+      correct: true
+    - id: c
+      text: "WebSockets encrypt data automatically without TLS"
+      correct: false
+    - id: d
+      text: "WebSockets replace the need for a load balancer"
+      correct: false
+  explanation: "HTTP is request-response: the client must ask for data. WebSockets upgrade an HTTP connection to a persistent bidirectional channel. The server can push messages to the client instantly, making them ideal for chat, live feeds, gaming, and collaborative editing."
+  doc_url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"
+  tags: [websockets, real-time, http, full-duplex]
+
+- id: sd-basics-016
+  version: "1"
+  topic: System Design
+  subtopic: API Gateway
+  difficulty: beginner
+  type: single_choice
+  question: "What is the role of an API gateway in a microservices architecture?"
+  options:
+    - id: a
+      text: "It stores all the microservices' source code in a single repository"
+      correct: false
+    - id: b
+      text: "It acts as a single entry point for clients, routing requests to the appropriate backend services"
+      correct: true
+    - id: c
+      text: "It replaces the database layer for all services"
+      correct: false
+    - id: d
+      text: "It compiles microservices into a single monolithic binary"
+      correct: false
+  explanation: "An API gateway provides a unified entry point for external clients. It handles cross-cutting concerns like authentication, rate limiting, request routing, protocol translation, and response aggregation — keeping this logic out of individual services."
+  doc_url: "https://microservices.io/patterns/apigateway.html"
+  tags: [api-gateway, microservices, routing]
+
+- id: sd-basics-017
+  version: "1"
+  topic: System Design
+  subtopic: Latency Numbers
+  difficulty: intermediate
+  type: single_choice
+  question: "Which ordering correctly ranks these operations from fastest to slowest?"
+  options:
+    - id: a
+      text: "L1 cache read → RAM read → SSD read → Network round-trip across the internet"
+      correct: true
+    - id: b
+      text: "RAM read → L1 cache read → Network round-trip → SSD read"
+      correct: false
+    - id: c
+      text: "SSD read → RAM read → L1 cache read → Network round-trip"
+      correct: false
+    - id: d
+      text: "Network round-trip → SSD read → RAM read → L1 cache read"
+      correct: false
+  explanation: "Approximate latencies: L1 cache ~1 ns, RAM ~100 ns, SSD random read ~100 μs, internet round-trip ~50–150 ms. Knowing these orders of magnitude is crucial for back-of-the-envelope capacity estimates and identifying bottlenecks."
+  doc_url: "https://gist.github.com/jboner/2841832"
+  tags: [latency, estimation, performance, memory-hierarchy]
+
+- id: sd-basics-018
+  version: "1"
+  topic: System Design
+  subtopic: Caching Strategies
+  difficulty: intermediate
+  type: single_choice
+  question: "In a write-through caching strategy, when is data written to the cache?"
+  options:
+    - id: a
+      text: "Only when a read request results in a cache miss"
+      correct: false
+    - id: b
+      text: "Simultaneously with the write to the database — every write updates both the cache and the database"
+      correct: true
+    - id: c
+      text: "After the data is evicted from the cache"
+      correct: false
+    - id: d
+      text: "By a background job that periodically syncs the database to the cache"
+      correct: false
+  explanation: "Write-through writes data to the cache and the database at the same time. This ensures the cache is always consistent with the database but adds latency to writes. Compare with write-back (write to cache first, flush to DB later) which is faster for writes but risks data loss."
+  doc_url: "https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"
+  tags: [caching, write-through, write-back, consistency]
+
+- id: sd-basics-019
+  version: "1"
+  topic: System Design
+  subtopic: Pub/Sub
+  difficulty: beginner
+  type: single_choice
+  question: "How does the publish/subscribe (pub/sub) pattern differ from a traditional message queue?"
+  options:
+    - id: a
+      text: "Pub/sub is synchronous while message queues are asynchronous"
+      correct: false
+    - id: b
+      text: "In pub/sub, messages are broadcast to all subscribers of a topic; in a queue, each message is delivered to exactly one consumer"
+      correct: true
+    - id: c
+      text: "Pub/sub can only handle text messages; queues handle binary data"
+      correct: false
+    - id: d
+      text: "There is no practical difference; they are interchangeable"
+      correct: false
+  explanation: "In pub/sub, publishers send messages to a topic and every subscriber receives a copy. In a traditional queue, each message is consumed by exactly one worker (competing consumers). Pub/sub is useful for event fan-out (notifications, analytics), while queues are better for work distribution."
+  doc_url: "https://cloud.google.com/pubsub/docs/overview"
+  tags: [pub-sub, message-queue, fan-out, events]
+
+- id: sd-basics-020
+  version: "1"
+  topic: System Design
+  subtopic: Hashing
+  difficulty: intermediate
+  type: single_choice
+  question: "Why are hash functions used to store passwords instead of encryption?"
+  options:
+    - id: a
+      text: "Hash functions are faster than encryption algorithms"
+      correct: false
+    - id: b
+      text: "Hashing is one-way — even if the hash is leaked, the original password cannot be recovered; encryption is reversible with the key"
+      correct: true
+    - id: c
+      text: "Encrypted passwords take more storage space"
+      correct: false
+    - id: d
+      text: "Hash functions produce shorter output than encryption"
+      correct: false
+  explanation: "Hashing is a one-way function: you can verify a password by hashing it and comparing, but you cannot reverse the hash to get the password. Encryption is reversible with the key, so a key leak exposes all passwords. Production systems use slow hashes like bcrypt, scrypt, or Argon2 to resist brute-force attacks."
+  doc_url: "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+  tags: [hashing, security, passwords, bcrypt]

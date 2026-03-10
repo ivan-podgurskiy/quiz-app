@@ -1,0 +1,241 @@
+- id: tf-basics-001
+  version: "1"
+  topic: Terraform
+  subtopic: Core Workflow
+  difficulty: beginner
+  type: single_choice
+  question: "What is the correct order of the core Terraform workflow commands?"
+  options:
+    - id: a
+      text: "plan → init → apply"
+      correct: false
+    - id: b
+      text: "init → plan → apply"
+      correct: true
+    - id: c
+      text: "apply → plan → init"
+      correct: false
+    - id: d
+      text: "init → apply → plan"
+      correct: false
+  explanation: "`terraform init` downloads providers and initializes the backend. `terraform plan` previews the changes. `terraform apply` executes them. This init → plan → apply sequence is the standard workflow."
+  doc_url: "https://developer.hashicorp.com/terraform/intro/core-workflow"
+  tags: [workflow, init, plan, apply]
+
+- id: tf-basics-002
+  version: "1"
+  topic: Terraform
+  subtopic: State
+  difficulty: beginner
+  type: single_choice
+  question: "What is the purpose of the Terraform state file?"
+  options:
+    - id: a
+      text: "To store provider credentials securely"
+      correct: false
+    - id: b
+      text: "To map real-world resources to your configuration and track metadata"
+      correct: true
+    - id: c
+      text: "To cache downloaded provider binaries"
+      correct: false
+    - id: d
+      text: "To log all previous plan outputs"
+      correct: false
+  explanation: "The state file (`terraform.tfstate`) is a JSON document that maps each resource in your configuration to a real-world object. Terraform uses it to determine what changes are needed during plan and apply."
+  doc_url: "https://developer.hashicorp.com/terraform/language/state"
+  tags: [state, tfstate]
+
+- id: tf-basics-003
+  version: "1"
+  topic: Terraform
+  subtopic: HCL Syntax
+  difficulty: beginner
+  type: single_choice
+  question: "In a `resource` block like `resource \"aws_instance\" \"web\" { ... }`, what does `\"web\"` represent?"
+  options:
+    - id: a
+      text: "The provider name"
+      correct: false
+    - id: b
+      text: "The resource type"
+      correct: false
+    - id: c
+      text: "The local name used to refer to this resource elsewhere in the configuration"
+      correct: true
+    - id: d
+      text: "The name tag assigned to the resource in the cloud provider"
+      correct: false
+  explanation: "The second label in a resource block is the local name. It is used to reference the resource as `aws_instance.web` within the same Terraform configuration. It has no effect on the cloud provider."
+  doc_url: "https://developer.hashicorp.com/terraform/language/resources/syntax"
+  tags: [hcl, resources, syntax]
+
+- id: tf-basics-004
+  version: "1"
+  topic: Terraform
+  subtopic: Variables
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which are valid ways to set an input variable's value in Terraform? (Select all that apply)"
+  options:
+    - id: a
+      text: "A .tfvars file"
+      correct: true
+    - id: b
+      text: "The -var flag on the command line"
+      correct: true
+    - id: c
+      text: "An environment variable named TF_VAR_<name>"
+      correct: true
+    - id: d
+      text: "Defining it inside a provisioner block"
+      correct: false
+  explanation: "Terraform accepts variable values from `.tfvars` files, the `-var` CLI flag, and environment variables prefixed with `TF_VAR_`. Provisioner blocks execute scripts and cannot define variable values."
+  doc_url: "https://developer.hashicorp.com/terraform/language/values/variables"
+  tags: [variables, tfvars, cli]
+
+- id: tf-basics-005
+  version: "1"
+  topic: Terraform
+  subtopic: Providers
+  difficulty: beginner
+  type: single_choice
+  question: "What does `terraform init` download when run for the first time?"
+  options:
+    - id: a
+      text: "The Terraform binary itself"
+      correct: false
+    - id: b
+      text: "The provider plugins specified in the configuration"
+      correct: true
+    - id: c
+      text: "The remote state file from the backend"
+      correct: false
+    - id: d
+      text: "The OS-specific shell interpreter"
+      correct: false
+  explanation: "`terraform init` initializes the working directory by downloading the required provider plugins into `.terraform/providers/` and setting up the backend configuration. It does not download or update the Terraform binary itself."
+  doc_url: "https://developer.hashicorp.com/terraform/cli/commands/init"
+  tags: [init, providers, plugins]
+
+- id: tf-basics-006
+  version: "1"
+  topic: Terraform
+  subtopic: Data Sources
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the difference between a `resource` and a `data` block in Terraform?"
+  options:
+    - id: a
+      text: "A `resource` creates and manages infrastructure; a `data` block reads existing infrastructure without managing it"
+      correct: true
+    - id: b
+      text: "A `data` block is for local values; a `resource` is for remote values"
+      correct: false
+    - id: c
+      text: "There is no difference — they are interchangeable"
+      correct: false
+    - id: d
+      text: "A `data` block creates infrastructure in read-only mode"
+      correct: false
+  explanation: "Resource blocks declare infrastructure that Terraform creates, updates, and destroys. Data sources (`data` blocks) query existing infrastructure or external information for use in the configuration without managing its lifecycle."
+  doc_url: "https://developer.hashicorp.com/terraform/language/data-sources"
+  tags: [data-sources, resources]
+
+- id: tf-basics-007
+  version: "1"
+  topic: Terraform
+  subtopic: State
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does this command do?"
+  code: |
+    terraform state mv aws_instance.old aws_instance.new
+  options:
+    - id: a
+      text: "Renames the cloud instance from 'old' to 'new'"
+      correct: false
+    - id: b
+      text: "Moves the resource's state entry to a new address without modifying real infrastructure"
+      correct: true
+    - id: c
+      text: "Destroys 'old' and creates 'new' with the same configuration"
+      correct: false
+    - id: d
+      text: "Copies the state file to a new backend"
+      correct: false
+  explanation: "`terraform state mv` updates the address of a resource within the state file. The actual cloud resource is untouched — only Terraform's internal reference changes. This is useful when refactoring configuration (e.g., renaming resources or moving them into modules)."
+  doc_url: "https://developer.hashicorp.com/terraform/cli/commands/state/mv"
+  tags: [state, refactoring, cli]
+
+- id: tf-basics-008
+  version: "1"
+  topic: Terraform
+  subtopic: Modules
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which statements about Terraform modules are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Every Terraform configuration is technically a module (the root module)"
+      correct: true
+    - id: b
+      text: "Child modules can be sourced from local paths, the Terraform Registry, or Git repos"
+      correct: true
+    - id: c
+      text: "A module automatically inherits all variables from the calling module"
+      correct: false
+    - id: d
+      text: "Modules can expose values to the caller via output blocks"
+      correct: true
+  explanation: "The top-level directory is the root module. Child modules are called with `module` blocks and sourced from various locations. Modules are encapsulated — they do not inherit variables and must receive them explicitly via input variables. They expose values via `output` blocks."
+  doc_url: "https://developer.hashicorp.com/terraform/language/modules"
+  tags: [modules, encapsulation, outputs]
+
+- id: tf-basics-009
+  version: "1"
+  topic: Terraform
+  subtopic: Lifecycle
+  difficulty: intermediate
+  type: single_choice
+  question: "What does `create_before_destroy = true` inside a `lifecycle` block do?"
+  options:
+    - id: a
+      text: "Creates a backup of the resource before any destroy operation"
+      correct: false
+    - id: b
+      text: "Ensures the new replacement resource is created before the old one is destroyed"
+      correct: true
+    - id: c
+      text: "Prevents the resource from ever being destroyed"
+      correct: false
+    - id: d
+      text: "Runs a provisioner before the destroy phase"
+      correct: false
+  explanation: "By default, Terraform destroys the old resource first, then creates the replacement. With `create_before_destroy = true`, Terraform reverses this order — creating the new resource first to minimize downtime."
+  doc_url: "https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle"
+  tags: [lifecycle, meta-arguments]
+
+- id: tf-basics-010
+  version: "1"
+  topic: Terraform
+  subtopic: Backends
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the primary benefit of using a remote backend (e.g., S3) for Terraform state?"
+  options:
+    - id: a
+      text: "It makes `terraform plan` run faster"
+      correct: false
+    - id: b
+      text: "It enables team collaboration by sharing state and supporting state locking"
+      correct: true
+    - id: c
+      text: "It automatically encrypts all resource attributes"
+      correct: false
+    - id: d
+      text: "It eliminates the need for `terraform init`"
+      correct: false
+  explanation: "Storing state remotely (e.g., in S3 with DynamoDB locking) allows multiple team members to work on the same infrastructure safely. State locking prevents concurrent modifications that could corrupt the state."
+  doc_url: "https://developer.hashicorp.com/terraform/language/backend"
+  tags: [backends, remote-state, collaboration]

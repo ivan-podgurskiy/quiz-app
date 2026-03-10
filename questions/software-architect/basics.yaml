@@ -1,0 +1,959 @@
+- id: sa-basics-001
+  version: "1"
+  topic: Software Architect
+  subtopic: SOLID Principles
+  difficulty: beginner
+  type: single_choice
+  question: "What does the Single Responsibility Principle (SRP) state?"
+  options:
+    - id: a
+      text: "A class should have only one instance throughout the application"
+      correct: false
+    - id: b
+      text: "A class should have only one reason to change"
+      correct: true
+    - id: c
+      text: "A class should only expose a single public method"
+      correct: false
+    - id: d
+      text: "A module should depend on only one other module"
+      correct: false
+  explanation: "SRP states that a class should have only one reason to change, meaning it should encapsulate exactly one responsibility. This leads to smaller, focused classes that are easier to understand, test, and maintain."
+  doc_url: "https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html"
+  tags: [solid, srp, design-principles]
+
+- id: sa-basics-002
+  version: "1"
+  topic: Software Architect
+  subtopic: SOLID Principles
+  difficulty: beginner
+  type: single_choice
+  question: "The Dependency Inversion Principle says that high-level modules should not depend on low-level modules. What should both depend on?"
+  options:
+    - id: a
+      text: "Concrete implementations"
+      correct: false
+    - id: b
+      text: "Abstractions (interfaces)"
+      correct: true
+    - id: c
+      text: "A shared database"
+      correct: false
+    - id: d
+      text: "A service locator"
+      correct: false
+  explanation: "The Dependency Inversion Principle states that both high-level and low-level modules should depend on abstractions, and abstractions should not depend on details. This decouples components and makes the system easier to change and test."
+  doc_url: "https://martinfowler.com/articles/dipInTheWild.html"
+  tags: [solid, dip, dependency-inversion, design-principles]
+
+- id: sa-basics-003
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Patterns
+  difficulty: beginner
+  type: single_choice
+  question: "In a layered (n-tier) architecture, which rule governs how layers communicate?"
+  options:
+    - id: a
+      text: "Any layer may call any other layer directly"
+      correct: false
+    - id: b
+      text: "Each layer may only depend on the layer directly below it"
+      correct: true
+    - id: c
+      text: "Layers communicate exclusively through a message queue"
+      correct: false
+    - id: d
+      text: "Only the top-most and bottom-most layers may communicate"
+      correct: false
+  explanation: "In a strict layered architecture, each layer only knows about and depends on the layer directly beneath it (e.g., Presentation → Business Logic → Data Access). This enforces separation of concerns and makes layers independently replaceable."
+  doc_url: "https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch01.html"
+  tags: [layered-architecture, n-tier, architecture-patterns]
+
+- id: sa-basics-004
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Patterns
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the key difference between CQRS (Command Query Responsibility Segregation) and a traditional CRUD architecture?"
+  options:
+    - id: a
+      text: "CQRS uses NoSQL databases while CRUD uses relational databases"
+      correct: false
+    - id: b
+      text: "CQRS separates the read model from the write model, allowing each to be optimized independently"
+      correct: true
+    - id: c
+      text: "CQRS eliminates the need for a database entirely"
+      correct: false
+    - id: d
+      text: "CQRS requires event sourcing while CRUD does not"
+      correct: false
+  explanation: "CQRS splits the data model into a command (write) model and a query (read) model. This allows each side to be scaled, optimized, and evolved independently. While often paired with event sourcing, CQRS does not require it."
+  doc_url: "https://martinfowler.com/bliki/CQRS.html"
+  tags: [cqrs, architecture-patterns, read-write-separation]
+
+- id: sa-basics-005
+  version: "1"
+  topic: Software Architect
+  subtopic: Domain-Driven Design
+  difficulty: intermediate
+  type: single_choice
+  question: "In Domain-Driven Design, what is a Bounded Context?"
+  options:
+    - id: a
+      text: "A limit on the number of entities in a domain model"
+      correct: false
+    - id: b
+      text: "An explicit boundary within which a particular domain model applies consistently"
+      correct: true
+    - id: c
+      text: "A security perimeter that restricts API access"
+      correct: false
+    - id: d
+      text: "A database schema that isolates one service's tables from another"
+      correct: false
+  explanation: "A Bounded Context is a central pattern in DDD that defines the boundaries within which a particular model is defined and applicable. Different bounded contexts may have different models for the same real-world concept (e.g., 'Customer' in billing vs. shipping), and they communicate through well-defined interfaces."
+  doc_url: "https://martinfowler.com/bliki/BoundedContext.html"
+  tags: [ddd, bounded-context, domain-modeling]
+
+- id: sa-basics-006
+  version: "1"
+  topic: Software Architect
+  subtopic: Domain-Driven Design
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which of the following are tactical DDD building blocks? (Select all that apply)"
+  options:
+    - id: a
+      text: "Aggregate"
+      correct: true
+    - id: b
+      text: "Value Object"
+      correct: true
+    - id: c
+      text: "Load Balancer"
+      correct: false
+    - id: d
+      text: "Repository"
+      correct: true
+  explanation: "Aggregates, Value Objects, Entities, Repositories, Domain Events, and Services are all tactical DDD building blocks used to express the domain model in code. A Load Balancer is an infrastructure concern, not a DDD pattern."
+  doc_url: "https://www.domainlanguage.com/ddd/reference/"
+  tags: [ddd, aggregate, value-object, repository, tactical-patterns]
+
+- id: sa-basics-007
+  version: "1"
+  topic: Software Architect
+  subtopic: Event-Driven Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What is Event Sourcing?"
+  options:
+    - id: a
+      text: "Using events to trigger CI/CD pipelines"
+      correct: false
+    - id: b
+      text: "Storing every state change as an immutable event, so the current state is derived by replaying events"
+      correct: true
+    - id: c
+      text: "Publishing events to a CDN for faster client-side rendering"
+      correct: false
+    - id: d
+      text: "Using webhooks to notify third-party services of changes"
+      correct: false
+  explanation: "Event Sourcing persists every change to application state as an immutable event in an append-only store. The current state is reconstructed by replaying the event log. This provides a complete audit trail, enables temporal queries, and simplifies debugging."
+  doc_url: "https://martinfowler.com/eaaDev/EventSourcing.html"
+  tags: [event-sourcing, event-driven, architecture-patterns]
+
+- id: sa-basics-008
+  version: "1"
+  topic: Software Architect
+  subtopic: Resilience Patterns
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the Circuit Breaker pattern prevent?"
+  options:
+    - id: a
+      text: "SQL injection attacks"
+      correct: false
+    - id: b
+      text: "Cascading failures by stopping calls to a failing downstream service after repeated errors"
+      correct: true
+    - id: c
+      text: "Memory leaks in long-running processes"
+      correct: false
+    - id: d
+      text: "Race conditions in concurrent code"
+      correct: false
+  explanation: "A Circuit Breaker monitors calls to a remote service. After a threshold of failures, it 'opens' and immediately returns an error (or fallback) without making the call, giving the downstream service time to recover. It periodically allows a test request ('half-open') to see if the service has recovered."
+  doc_url: "https://martinfowler.com/bliki/CircuitBreaker.html"
+  tags: [circuit-breaker, resilience, fault-tolerance]
+
+- id: sa-basics-009
+  version: "1"
+  topic: Software Architect
+  subtopic: Resilience Patterns
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which of the following are resilience patterns for distributed systems? (Select all that apply)"
+  options:
+    - id: a
+      text: "Bulkhead — isolate failures so one component's failure doesn't exhaust shared resources"
+      correct: true
+    - id: b
+      text: "Retry with exponential backoff — retry failed requests with increasing delays"
+      correct: true
+    - id: c
+      text: "Singleton — ensure only one instance of a class exists"
+      correct: false
+    - id: d
+      text: "Timeout — set upper bounds on how long to wait for a response"
+      correct: true
+  explanation: "Bulkhead, retry with backoff, and timeouts are all resilience patterns that prevent failures in one part of the system from cascading. Singleton is a creational design pattern, not a resilience pattern."
+  doc_url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/"
+  tags: [resilience, bulkhead, retry, timeout, fault-tolerance]
+
+- id: sa-basics-010
+  version: "1"
+  topic: Software Architect
+  subtopic: Quality Attributes
+  difficulty: beginner
+  type: single_choice
+  question: "Which architectural quality attribute describes a system's ability to handle increased load by adding resources?"
+  options:
+    - id: a
+      text: "Reliability"
+      correct: false
+    - id: b
+      text: "Scalability"
+      correct: true
+    - id: c
+      text: "Maintainability"
+      correct: false
+    - id: d
+      text: "Testability"
+      correct: false
+  explanation: "Scalability is the ability of a system to handle growing amounts of work by adding resources (vertical or horizontal). Reliability is about correct operation under faults, maintainability about ease of change, and testability about ease of validating behavior."
+  doc_url: "https://en.wikipedia.org/wiki/Scalability"
+  tags: [quality-attributes, scalability, non-functional-requirements]
+
+- id: sa-basics-011
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Patterns
+  difficulty: intermediate
+  type: single_choice
+  question: "In a Hexagonal Architecture (Ports and Adapters), what role do 'ports' play?"
+  options:
+    - id: a
+      text: "They are TCP/UDP network ports the application listens on"
+      correct: false
+    - id: b
+      text: "They are interfaces that define how the core domain interacts with external systems"
+      correct: true
+    - id: c
+      text: "They are database connection pools shared across services"
+      correct: false
+    - id: d
+      text: "They are entry points for deployment pipelines"
+      correct: false
+  explanation: "In Hexagonal Architecture, ports are interfaces (abstractions) defined by the application core. Adapters implement these interfaces to connect the core to the outside world (databases, APIs, UIs). This keeps the domain logic free of infrastructure concerns."
+  doc_url: "https://alistair.cockburn.us/hexagonal-architecture/"
+  tags: [hexagonal-architecture, ports-and-adapters, clean-architecture]
+
+- id: sa-basics-012
+  version: "1"
+  topic: Software Architect
+  subtopic: Integration Patterns
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the Strangler Fig pattern used for?"
+  options:
+    - id: a
+      text: "Throttling traffic to prevent denial-of-service attacks"
+      correct: false
+    - id: b
+      text: "Incrementally migrating a legacy system by gradually replacing pieces with new implementations"
+      correct: true
+    - id: c
+      text: "Distributing database writes across multiple shards"
+      correct: false
+    - id: d
+      text: "Compressing logs to save storage space"
+      correct: false
+  explanation: "The Strangler Fig pattern (named after strangler fig trees that grow around host trees) lets you incrementally replace a legacy system. A facade routes traffic, gradually directing more requests to the new system until the old one can be decommissioned — avoiding a risky big-bang rewrite."
+  doc_url: "https://martinfowler.com/bliki/StranglerFigApplication.html"
+  tags: [strangler-fig, migration, legacy, modernization]
+
+- id: sa-basics-013
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Documentation
+  difficulty: beginner
+  type: single_choice
+  question: "What is an Architecture Decision Record (ADR)?"
+  options:
+    - id: a
+      text: "A UML diagram showing all system components"
+      correct: false
+    - id: b
+      text: "A short document capturing an architectural decision, its context, and consequences"
+      correct: true
+    - id: c
+      text: "A log of all deployment events in production"
+      correct: false
+    - id: d
+      text: "A record of code review approvals"
+      correct: false
+  explanation: "An ADR is a lightweight document that records a significant architectural decision along with its context (why the decision was needed), the decision itself, and its consequences. ADRs provide a decision log that helps current and future team members understand the rationale behind the architecture."
+  doc_url: "https://adr.github.io/"
+  tags: [adr, documentation, architecture-decisions]
+
+- id: sa-basics-014
+  version: "1"
+  topic: Software Architect
+  subtopic: Data Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the Saga pattern solve in a microservices architecture?"
+  options:
+    - id: a
+      text: "Service discovery and load balancing"
+      correct: false
+    - id: b
+      text: "Managing distributed transactions across multiple services without a two-phase commit"
+      correct: true
+    - id: c
+      text: "Schema migrations across multiple databases"
+      correct: false
+    - id: d
+      text: "Real-time data replication between regions"
+      correct: false
+  explanation: "A Saga is a sequence of local transactions where each service performs its transaction and publishes an event (or sends a command) to trigger the next step. If a step fails, compensating transactions are executed to undo previous steps. This avoids the complexity and availability issues of distributed two-phase commits."
+  doc_url: "https://microservices.io/patterns/data/saga.html"
+  tags: [saga, distributed-transactions, microservices, data-consistency]
+
+- id: sa-basics-015
+  version: "1"
+  topic: Software Architect
+  subtopic: API Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "When would you choose an API Gateway over direct client-to-service communication?"
+  options:
+    - id: a
+      text: "When you have only a single monolithic service"
+      correct: false
+    - id: b
+      text: "When you need a single entry point that handles cross-cutting concerns like auth, rate limiting, and request routing for multiple backend services"
+      correct: true
+    - id: c
+      text: "When you want to eliminate all network latency"
+      correct: false
+    - id: d
+      text: "When your services only communicate asynchronously via queues"
+      correct: false
+  explanation: "An API Gateway acts as a reverse proxy that provides a single entry point for clients. It handles cross-cutting concerns (authentication, SSL termination, rate limiting, request aggregation) and routes requests to the appropriate backend services, simplifying client logic."
+  doc_url: "https://microservices.io/patterns/apigateway.html"
+  tags: [api-gateway, api-design, microservices]
+
+- id: sa-basics-016
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Patterns
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which statements about the Trade-offs between microservices and a modular monolith are correct? (Select all that apply)"
+  options:
+    - id: a
+      text: "A modular monolith enforces module boundaries at the code level but deploys as a single unit"
+      correct: true
+    - id: b
+      text: "Microservices always have lower operational complexity than a modular monolith"
+      correct: false
+    - id: c
+      text: "A modular monolith can be a stepping stone — modules can later be extracted into services"
+      correct: true
+    - id: d
+      text: "Microservices enable independent deployment and scaling of individual components"
+      correct: true
+  explanation: "A modular monolith maintains clear module boundaries (enforced by visibility rules or build modules) while keeping deployment simple. It's often a pragmatic starting point that can evolve toward microservices as needed. Microservices add independent deployability and scalability but at the cost of significant operational complexity."
+  doc_url: "https://www.kamilgrzybek.com/blog/posts/modular-monolith-primer"
+  tags: [modular-monolith, microservices, trade-offs, architecture-patterns]
+
+- id: sa-basics-017
+  version: "1"
+  topic: Software Architect
+  subtopic: Security Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the principle of least privilege?"
+  options:
+    - id: a
+      text: "Every service should have admin access to simplify development"
+      correct: false
+    - id: b
+      text: "Every component should be granted only the minimum permissions it needs to perform its function"
+      correct: true
+    - id: c
+      text: "Only the lead architect should have access to production systems"
+      correct: false
+    - id: d
+      text: "Privileges should be granted equally to all users for fairness"
+      correct: false
+  explanation: "The principle of least privilege dictates that any entity (user, service, process) should have only the minimum set of permissions necessary to perform its task. This limits the blast radius of compromised credentials and reduces the attack surface."
+  doc_url: "https://csrc.nist.gov/glossary/term/least_privilege"
+  tags: [security, least-privilege, access-control]
+
+- id: sa-basics-018
+  version: "1"
+  topic: Software Architect
+  subtopic: Observability
+  difficulty: intermediate
+  type: multiple_choice
+  question: "What are the three pillars of observability? (Select all that apply)"
+  options:
+    - id: a
+      text: "Logs — timestamped records of discrete events"
+      correct: true
+    - id: b
+      text: "Metrics — numerical measurements aggregated over time"
+      correct: true
+    - id: c
+      text: "Traces — end-to-end tracking of requests across services"
+      correct: true
+    - id: d
+      text: "Alerts — notifications sent when thresholds are breached"
+      correct: false
+  explanation: "The three pillars of observability are logs (detailed event records), metrics (aggregated numerical data like latency and error rates), and traces (distributed request flows across services). Alerting is built on top of these pillars but is not itself a pillar."
+  doc_url: "https://opentelemetry.io/docs/concepts/signals/"
+  tags: [observability, logging, metrics, tracing]
+
+- id: sa-basics-019
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Evaluation
+  difficulty: advanced
+  type: single_choice
+  question: "What is ATAM (Architecture Tradeoff Analysis Method) primarily used for?"
+  options:
+    - id: a
+      text: "Automated performance testing of deployed systems"
+      correct: false
+    - id: b
+      text: "Evaluating an architecture against quality attribute scenarios to identify risks and trade-offs"
+      correct: true
+    - id: c
+      text: "Generating UML diagrams from source code"
+      correct: false
+    - id: d
+      text: "Estimating project timelines based on architecture complexity"
+      correct: false
+  explanation: "ATAM is a structured method for evaluating software architectures relative to quality attribute goals. Stakeholders define scenarios (e.g., 'response time under 200ms at 10k concurrent users'), and the architecture is analyzed for sensitivity points, trade-offs, and risks against these scenarios."
+  doc_url: "https://insights.sei.cmu.edu/library/atam-method-for-architecture-evaluation/"
+  tags: [atam, architecture-evaluation, quality-attributes, trade-offs]
+
+- id: sa-basics-020
+  version: "1"
+  topic: Software Architect
+  subtopic: Evolutionary Architecture
+  difficulty: advanced
+  type: single_choice
+  question: "What is a 'fitness function' in the context of evolutionary architecture?"
+  options:
+    - id: a
+      text: "A heuristic for choosing the right programming language"
+      correct: false
+    - id: b
+      text: "An automated, objective measure that assesses whether the architecture still meets a specific goal as the system evolves"
+      correct: true
+    - id: c
+      text: "A genetic algorithm used to optimize database queries"
+      correct: false
+    - id: d
+      text: "A performance benchmark that runs during load testing"
+      correct: false
+  explanation: "Architectural fitness functions are automated checks that verify architectural characteristics (e.g., no cyclic dependencies between modules, latency SLOs, component coupling metrics). They run in CI/CD pipelines to ensure the architecture doesn't degrade as the codebase evolves."
+  doc_url: "https://www.thoughtworks.com/insights/articles/fitness-function-driven-development"
+  tags: [evolutionary-architecture, fitness-functions, governance, ci-cd]
+
+- id: sa-basics-021
+  version: "1"
+  topic: Software Architect
+  subtopic: SOLID Principles
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the Open/Closed Principle state?"
+  options:
+    - id: a
+      text: "Classes should be open for modification and closed for extension"
+      correct: false
+    - id: b
+      text: "Software entities should be open for extension but closed for modification"
+      correct: true
+    - id: c
+      text: "Only open-source modules should be used in production"
+      correct: false
+    - id: d
+      text: "Public APIs should never be changed after release"
+      correct: false
+  explanation: "The Open/Closed Principle states that you should be able to extend a module's behavior without modifying its existing source code. This is typically achieved through abstractions (interfaces, abstract classes) and polymorphism, allowing new functionality via new implementations rather than editing existing code."
+  doc_url: "https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html"
+  tags: [solid, ocp, design-principles]
+
+- id: sa-basics-022
+  version: "1"
+  topic: Software Architect
+  subtopic: SOLID Principles
+  difficulty: intermediate
+  type: single_choice
+  question: "The Liskov Substitution Principle requires that:"
+  options:
+    - id: a
+      text: "Subtypes must be substitutable for their base types without altering program correctness"
+      correct: true
+    - id: b
+      text: "Every class must have a substitute implementation for testing"
+      correct: false
+    - id: c
+      text: "Derived classes must override every method of the base class"
+      correct: false
+    - id: d
+      text: "Interfaces should only have one method"
+      correct: false
+  explanation: "LSP states that objects of a superclass should be replaceable with objects of a subclass without breaking the application. A classic violation: a Square subclass of Rectangle that breaks invariants when setWidth/setHeight are called independently."
+  doc_url: "https://en.wikipedia.org/wiki/Liskov_substitution_principle"
+  tags: [solid, lsp, design-principles, inheritance]
+
+- id: sa-basics-023
+  version: "1"
+  topic: Software Architect
+  subtopic: SOLID Principles
+  difficulty: intermediate
+  type: single_choice
+  question: "What problem does the Interface Segregation Principle solve?"
+  options:
+    - id: a
+      text: "It prevents interfaces from being implemented by more than one class"
+      correct: false
+    - id: b
+      text: "It ensures clients are not forced to depend on methods they do not use"
+      correct: true
+    - id: c
+      text: "It segregates interfaces into public and private tiers"
+      correct: false
+    - id: d
+      text: "It mandates that every interface has exactly one implementation"
+      correct: false
+  explanation: "ISP states that no client should be forced to depend on methods it does not use. Instead of one large 'fat' interface, split it into smaller, cohesive interfaces so that implementing classes only need to know about the methods that are relevant to them."
+  doc_url: "https://en.wikipedia.org/wiki/Interface_segregation_principle"
+  tags: [solid, isp, design-principles, interfaces]
+
+- id: sa-basics-024
+  version: "1"
+  topic: Software Architect
+  subtopic: Design Principles
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are well-known software design principles? (Select all that apply)"
+  options:
+    - id: a
+      text: "DRY — Don't Repeat Yourself"
+      correct: true
+    - id: b
+      text: "KISS — Keep It Simple, Stupid"
+      correct: true
+    - id: c
+      text: "YAGNI — You Aren't Gonna Need It"
+      correct: true
+    - id: d
+      text: "FIFO — First In, First Out"
+      correct: false
+  explanation: "DRY eliminates knowledge duplication, KISS favors simplicity over unnecessary complexity, and YAGNI warns against implementing functionality before it's actually needed. FIFO is a queue ordering strategy, not a design principle."
+  doc_url: "https://en.wikipedia.org/wiki/Don%27t_repeat_yourself"
+  tags: [dry, kiss, yagni, design-principles]
+
+- id: sa-basics-025
+  version: "1"
+  topic: Software Architect
+  subtopic: Design Principles
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the relationship between coupling and cohesion in well-designed modules?"
+  options:
+    - id: a
+      text: "High coupling and high cohesion"
+      correct: false
+    - id: b
+      text: "Low coupling and low cohesion"
+      correct: false
+    - id: c
+      text: "Low coupling and high cohesion"
+      correct: true
+    - id: d
+      text: "Coupling and cohesion are unrelated concepts"
+      correct: false
+  explanation: "Well-designed modules have high cohesion (elements within a module are closely related and work together toward a single purpose) and low coupling (modules depend on each other as little as possible). This combination maximizes maintainability and independent changeability."
+  doc_url: "https://en.wikipedia.org/wiki/Coupling_(computer_programming)"
+  tags: [coupling, cohesion, design-principles, modularity]
+
+- id: sa-basics-026
+  version: "1"
+  topic: Software Architect
+  subtopic: Design Principles
+  difficulty: intermediate
+  type: single_choice
+  question: "Why is 'composition over inheritance' generally preferred in software design?"
+  options:
+    - id: a
+      text: "Inheritance is not supported by most programming languages"
+      correct: false
+    - id: b
+      text: "Composition avoids deep class hierarchies, reduces tight coupling, and allows behavior to be changed at runtime"
+      correct: true
+    - id: c
+      text: "Composition uses less memory than inheritance"
+      correct: false
+    - id: d
+      text: "Inheritance violates all SOLID principles"
+      correct: false
+  explanation: "Deep inheritance hierarchies create tight coupling between parent and child classes, making the system fragile. Composition assembles behavior from smaller, interchangeable components, making it easier to change, test, and reuse behavior without modifying existing class hierarchies."
+  doc_url: "https://en.wikipedia.org/wiki/Composition_over_inheritance"
+  tags: [composition, inheritance, design-principles, flexibility]
+
+- id: sa-basics-027
+  version: "1"
+  topic: Software Architect
+  subtopic: Communication Patterns
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the difference between orchestration and choreography in service communication?"
+  options:
+    - id: a
+      text: "Orchestration uses a central coordinator to direct interactions; choreography lets each service react to events independently"
+      correct: true
+    - id: b
+      text: "Orchestration is asynchronous; choreography is synchronous"
+      correct: false
+    - id: c
+      text: "Choreography requires a message broker; orchestration does not"
+      correct: false
+    - id: d
+      text: "They are two names for the same pattern"
+      correct: false
+  explanation: "In orchestration, a central service (orchestrator) explicitly tells each participant what to do and when. In choreography, services emit events and other services react independently — there's no central controller. Orchestration is easier to reason about; choreography reduces coupling but can be harder to trace."
+  doc_url: "https://microservices.io/patterns/data/saga.html"
+  tags: [orchestration, choreography, service-communication, microservices]
+
+- id: sa-basics-028
+  version: "1"
+  topic: Software Architect
+  subtopic: Cloud-Native
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which of the following are factors from the Twelve-Factor App methodology? (Select all that apply)"
+  options:
+    - id: a
+      text: "Store config in the environment, not in code"
+      correct: true
+    - id: b
+      text: "Treat backing services (databases, queues) as attached resources"
+      correct: true
+    - id: c
+      text: "Require a specific operating system for all deployments"
+      correct: false
+    - id: d
+      text: "Keep development, staging, and production as similar as possible (dev/prod parity)"
+      correct: true
+  explanation: "The Twelve-Factor App is a methodology for building SaaS applications. Key factors include environment-based config, backing services as attached resources, dev/prod parity, stateless processes, and disposability. It does not prescribe a specific OS."
+  doc_url: "https://12factor.net/"
+  tags: [twelve-factor, cloud-native, saas, methodology]
+
+- id: sa-basics-029
+  version: "1"
+  topic: Software Architect
+  subtopic: Cloud-Native
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the Sidecar pattern in a microservices architecture?"
+  options:
+    - id: a
+      text: "A backup service that takes over when the primary service fails"
+      correct: false
+    - id: b
+      text: "A helper container deployed alongside the main application container to provide supporting functionality like logging, proxying, or config"
+      correct: true
+    - id: c
+      text: "A secondary database used for read-only queries"
+      correct: false
+    - id: d
+      text: "A monitoring dashboard that runs alongside each service"
+      correct: false
+  explanation: "The Sidecar pattern deploys a helper process (often a container) alongside the main service within the same pod or host. The sidecar handles cross-cutting concerns like TLS termination, logging, metrics collection, or service mesh proxying (e.g., Envoy in Istio), keeping the main service focused on business logic."
+  doc_url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/sidecar"
+  tags: [sidecar, service-mesh, cloud-native, containers]
+
+- id: sa-basics-030
+  version: "1"
+  topic: Software Architect
+  subtopic: Deployment Strategies
+  difficulty: intermediate
+  type: single_choice
+  question: "What is a Canary deployment?"
+  options:
+    - id: a
+      text: "Deploying to a completely new environment and switching DNS to it"
+      correct: false
+    - id: b
+      text: "Gradually rolling out a new version to a small subset of users before a full rollout"
+      correct: true
+    - id: c
+      text: "Deploying all services simultaneously at a scheduled maintenance window"
+      correct: false
+    - id: d
+      text: "Running two identical production environments and swapping between them"
+      correct: false
+  explanation: "A Canary deployment routes a small percentage of traffic to the new version while the majority stays on the old version. If metrics look healthy, traffic is gradually shifted. This reduces risk — if the canary fails, only a small fraction of users is affected. Blue-Green deployment (option D's description) swaps entire environments instead."
+  doc_url: "https://martinfowler.com/bliki/CanaryRelease.html"
+  tags: [canary, deployment, release-strategies]
+
+- id: sa-basics-031
+  version: "1"
+  topic: Software Architect
+  subtopic: Deployment Strategies
+  difficulty: intermediate
+  type: single_choice
+  question: "In a Blue-Green deployment, what are 'blue' and 'green'?"
+  options:
+    - id: a
+      text: "Two git branches: one for features, one for bug fixes"
+      correct: false
+    - id: b
+      text: "Two identical production environments — one live, one idle — that swap roles during deployment"
+      correct: true
+    - id: c
+      text: "Two database replicas with different consistency levels"
+      correct: false
+    - id: d
+      text: "Two load balancers in different regions"
+      correct: false
+  explanation: "Blue-Green deployment maintains two identical production environments. Only one (e.g., Blue) serves live traffic. The new version is deployed to the idle environment (Green), tested, and then traffic is switched over. If issues arise, you instantly switch back to Blue — enabling zero-downtime rollbacks."
+  doc_url: "https://martinfowler.com/bliki/BlueGreenDeployment.html"
+  tags: [blue-green, deployment, zero-downtime, release-strategies]
+
+- id: sa-basics-032
+  version: "1"
+  topic: Software Architect
+  subtopic: Domain-Driven Design
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the Anti-Corruption Layer (ACL) pattern in DDD?"
+  options:
+    - id: a
+      text: "A firewall that blocks malicious API requests"
+      correct: false
+    - id: b
+      text: "A translation layer that prevents a legacy or external model from leaking into your domain model"
+      correct: true
+    - id: c
+      text: "A database trigger that prevents data corruption"
+      correct: false
+    - id: d
+      text: "An encryption layer between microservices"
+      correct: false
+  explanation: "The Anti-Corruption Layer is a translation boundary between two bounded contexts (often between your system and a legacy system or third-party API). It translates between the external model and your domain model, keeping your domain clean and preventing external concepts from corrupting your design."
+  doc_url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/anti-corruption-layer"
+  tags: [ddd, anti-corruption-layer, bounded-context, integration]
+
+- id: sa-basics-033
+  version: "1"
+  topic: Software Architect
+  subtopic: Domain-Driven Design
+  difficulty: beginner
+  type: single_choice
+  question: "What is the Ubiquitous Language in DDD?"
+  options:
+    - id: a
+      text: "A programming language that all team members must use"
+      correct: false
+    - id: b
+      text: "A shared language between developers and domain experts, used consistently in code, conversations, and documentation"
+      correct: true
+    - id: c
+      text: "A universal API schema shared across all microservices"
+      correct: false
+    - id: d
+      text: "An interface definition language like Protocol Buffers"
+      correct: false
+  explanation: "Ubiquitous Language is a common, rigorous language developed collaboratively by developers and domain experts. The same terms are used in conversations, documentation, and code (class names, method names). This reduces miscommunication and ensures the code reflects the true domain model."
+  doc_url: "https://martinfowler.com/bliki/UbiquitousLanguage.html"
+  tags: [ddd, ubiquitous-language, domain-modeling, communication]
+
+- id: sa-basics-034
+  version: "1"
+  topic: Software Architect
+  subtopic: Data Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What does the 'Database per Service' pattern mean, and why is it used?"
+  options:
+    - id: a
+      text: "All services share one database for consistency; each service has its own schema"
+      correct: false
+    - id: b
+      text: "Each microservice owns a private database, ensuring loose coupling and independent data evolution"
+      correct: true
+    - id: c
+      text: "Each service must use the same database technology"
+      correct: false
+    - id: d
+      text: "A separate database is allocated per deployment environment (dev, staging, prod)"
+      correct: false
+  explanation: "Database per Service gives each microservice its own data store, preventing direct coupling through shared tables. Services access each other's data only through APIs. This enables independent schema evolution, technology choices (polyglot persistence), and independent scaling — at the cost of added complexity for cross-service queries."
+  doc_url: "https://microservices.io/patterns/data/database-per-service.html"
+  tags: [database-per-service, microservices, data-architecture, polyglot-persistence]
+
+- id: sa-basics-035
+  version: "1"
+  topic: Software Architect
+  subtopic: API Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What is the Backend for Frontend (BFF) pattern?"
+  options:
+    - id: a
+      text: "A universal backend that serves all frontend clients identically"
+      correct: false
+    - id: b
+      text: "A separate backend service tailored to the specific needs of each frontend client (web, mobile, etc.)"
+      correct: true
+    - id: c
+      text: "A frontend framework that generates backend code automatically"
+      correct: false
+    - id: d
+      text: "A caching layer that sits between the frontend and the API Gateway"
+      correct: false
+  explanation: "BFF creates a dedicated backend per user experience (e.g., one for the web app, one for the mobile app). Each BFF aggregates and transforms data specifically for its client, avoiding a one-size-fits-all API that either over-fetches for simple clients or under-fetches for complex ones."
+  doc_url: "https://samnewman.io/patterns/architectural/bff/"
+  tags: [bff, backend-for-frontend, api-design, microservices]
+
+- id: sa-basics-036
+  version: "1"
+  topic: Software Architect
+  subtopic: API Architecture
+  difficulty: intermediate
+  type: multiple_choice
+  question: "Which are valid trade-offs when choosing GraphQL over REST? (Select all that apply)"
+  options:
+    - id: a
+      text: "GraphQL eliminates over-fetching by letting clients request exactly the fields they need"
+      correct: true
+    - id: b
+      text: "GraphQL makes HTTP caching simpler than REST"
+      correct: false
+    - id: c
+      text: "GraphQL provides a strongly-typed schema that serves as a contract between client and server"
+      correct: true
+    - id: d
+      text: "GraphQL can increase backend complexity due to query resolution and N+1 problems"
+      correct: true
+  explanation: "GraphQL gives clients control over the response shape (reducing over-fetching) and provides a typed schema for tooling and validation. However, HTTP caching is harder (everything is POST to one endpoint), and naive resolvers can cause N+1 query problems that require batching (e.g., DataLoader) to solve."
+  doc_url: "https://graphql.org/learn/"
+  tags: [graphql, rest, api-design, trade-offs]
+
+- id: sa-basics-037
+  version: "1"
+  topic: Software Architect
+  subtopic: Security Architecture
+  difficulty: advanced
+  type: single_choice
+  question: "What is the Zero Trust security model?"
+  options:
+    - id: a
+      text: "Trust all traffic within the internal network, only verify external requests"
+      correct: false
+    - id: b
+      text: "Never trust, always verify — every request must be authenticated and authorized regardless of network location"
+      correct: true
+    - id: c
+      text: "Zero encryption overhead by trusting all internal services"
+      correct: false
+    - id: d
+      text: "Removing all firewalls and relying solely on application-level security"
+      correct: false
+  explanation: "Zero Trust assumes no implicit trust based on network location. Every request — even from inside the corporate network — must be authenticated, authorized, and encrypted. This model protects against lateral movement after a breach and is increasingly important in cloud and remote-work environments."
+  doc_url: "https://www.nist.gov/publications/zero-trust-architecture"
+  tags: [zero-trust, security, authentication, network-security]
+
+- id: sa-basics-038
+  version: "1"
+  topic: Software Architect
+  subtopic: Testing Architecture
+  difficulty: intermediate
+  type: single_choice
+  question: "What is Consumer-Driven Contract Testing?"
+  options:
+    - id: a
+      text: "The provider defines the API contract and consumers must adapt to it"
+      correct: false
+    - id: b
+      text: "Consumers define their expectations of a provider's API, and the provider verifies it can satisfy all consumer contracts"
+      correct: true
+    - id: c
+      text: "A legal contract between service teams specifying API SLAs"
+      correct: false
+    - id: d
+      text: "End-to-end tests that verify every API endpoint in production"
+      correct: false
+  explanation: "In consumer-driven contract testing (e.g., using Pact), each consumer publishes a contract describing what it expects from the provider. The provider runs these contracts as tests, ensuring it doesn't break any consumer. This catches integration issues early without requiring full end-to-end tests."
+  doc_url: "https://docs.pact.io/"
+  tags: [contract-testing, consumer-driven, testing, microservices]
+
+- id: sa-basics-039
+  version: "1"
+  topic: Software Architect
+  subtopic: Testing Architecture
+  difficulty: advanced
+  type: single_choice
+  question: "What is Chaos Engineering?"
+  options:
+    - id: a
+      text: "Writing unit tests with random input data"
+      correct: false
+    - id: b
+      text: "Intentionally injecting failures into a production system to verify its resilience and uncover weaknesses"
+      correct: true
+    - id: c
+      text: "Rapidly deploying untested code to production to see what breaks"
+      correct: false
+    - id: d
+      text: "Using fuzzing tools to test API input validation"
+      correct: false
+  explanation: "Chaos Engineering, pioneered by Netflix with Chaos Monkey, proactively injects controlled failures (killed instances, network partitions, latency spikes) into production or staging to test that the system degrades gracefully. The goal is to build confidence in the system's ability to withstand turbulent conditions."
+  doc_url: "https://principlesofchaos.org/"
+  tags: [chaos-engineering, resilience, testing, fault-injection]
+
+- id: sa-basics-040
+  version: "1"
+  topic: Software Architect
+  subtopic: Architecture Patterns
+  difficulty: advanced
+  type: single_choice
+  question: "What is the Space-Based Architecture pattern designed to address?"
+  options:
+    - id: a
+      text: "Reducing cloud hosting costs by sharing compute instances"
+      correct: false
+    - id: b
+      text: "Achieving high scalability and elasticity by distributing processing and storage across multiple in-memory data grids, eliminating the database bottleneck"
+      correct: true
+    - id: c
+      text: "Organizing code into files based on their physical directory location"
+      correct: false
+    - id: d
+      text: "Deploying applications to multiple geographic regions for compliance"
+      correct: false
+  explanation: "Space-Based Architecture (also called tuple-space or cloud architecture) tackles extreme concurrency by moving data processing into in-memory data grids distributed across processing units. Each unit has its own local data cache, and data is asynchronously replicated, eliminating the central database as a scaling bottleneck."
+  doc_url: "https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch05.html"
+  tags: [space-based, scalability, in-memory, architecture-patterns]

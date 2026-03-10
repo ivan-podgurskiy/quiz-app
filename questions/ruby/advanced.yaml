@@ -1,0 +1,239 @@
+- id: ruby-adv-001
+  version: "1"
+  topic: Ruby
+  subtopic: Procs and Lambdas
+  difficulty: advanced
+  type: single_choice
+  question: "What is a key difference between a Proc and a Lambda in Ruby?"
+  options:
+    - id: a
+      text: "Procs are objects but Lambdas are not"
+      correct: false
+    - id: b
+      text: "A Lambda enforces arity (argument count) and returns control to the caller; a Proc does not check arity and returns from the enclosing method"
+      correct: true
+    - id: c
+      text: "Lambdas cannot be stored in variables"
+      correct: false
+    - id: d
+      text: "There is no difference; they are aliases"
+      correct: false
+  explanation: "Both are Proc objects, but lambdas check argument count (raising ArgumentError on mismatch) and `return` exits only the lambda. In a regular Proc, `return` exits the enclosing method, and extra/missing arguments are silently adjusted."
+  doc_url: "https://ruby-doc.org/core/Proc.html"
+  tags: [procs, lambdas, closures]
+
+- id: ruby-adv-002
+  version: "1"
+  topic: Ruby
+  subtopic: Modules
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this code output?"
+  code: |
+    module Greetable
+      def greet
+        "Hello from #{self.class.name}"
+      end
+    end
+
+    class Person
+      include Greetable
+    end
+
+    class Robot
+      include Greetable
+    end
+
+    puts Person.new.greet
+    puts Robot.new.greet
+  options:
+    - id: a
+      text: |
+        Hello from Greetable
+        Hello from Greetable
+      correct: false
+    - id: b
+      text: |
+        Hello from Person
+        Hello from Robot
+      correct: true
+    - id: c
+      text: "NoMethodError"
+      correct: false
+    - id: d
+      text: |
+        Hello from Object
+        Hello from Object
+      correct: false
+  explanation: "Modules used as mixins share behavior across classes. When `include` adds `Greetable` to the ancestor chain, `self` in the method refers to the receiving instance, so `self.class.name` returns the actual class name."
+  doc_url: "https://ruby-doc.org/core/Module.html#method-i-include"
+  tags: [modules, mixins, include]
+
+- id: ruby-adv-003
+  version: "1"
+  topic: Ruby
+  subtopic: Metaprogramming
+  difficulty: advanced
+  type: single_choice
+  question: "What does `method_missing` do in Ruby?"
+  options:
+    - id: a
+      text: "Defines a method that will be called when an object is garbage collected"
+      correct: false
+    - id: b
+      text: "Acts as a catch-all invoked when a message is sent to an object that has no matching method"
+      correct: true
+    - id: c
+      text: "Prevents undefined method errors by silently returning nil"
+      correct: false
+    - id: d
+      text: "Generates getter and setter methods automatically"
+      correct: false
+  explanation: "`method_missing` is called when Ruby's method lookup fails. You can override it to handle dynamic method calls, build DSLs, or create proxy objects. It should be paired with `respond_to_missing?` for correct behavior."
+  doc_url: "https://ruby-doc.org/core/BasicObject.html#method-i-method_missing"
+  tags: [metaprogramming, method-missing, dynamic-dispatch]
+
+- id: ruby-adv-004
+  version: "1"
+  topic: Ruby
+  subtopic: Concurrency
+  difficulty: advanced
+  type: single_choice
+  question: "What is the GIL (Global Interpreter Lock) in MRI Ruby?"
+  options:
+    - id: a
+      text: "A lock that prevents multiple Ruby programs from running on the same machine"
+      correct: false
+    - id: b
+      text: "A mutex that allows only one thread to execute Ruby code at a time, even on multi-core CPUs"
+      correct: true
+    - id: c
+      text: "A mechanism that locks global variables to prevent race conditions"
+      correct: false
+    - id: d
+      text: "A garbage collection optimization technique"
+      correct: false
+  explanation: "The GIL (also called GVL — Global VM Lock) in MRI Ruby ensures only one thread runs Ruby code at a time. Threads still provide concurrency for I/O-bound work (the lock is released during I/O), but CPU-bound parallelism requires Ractors or multiple processes."
+  doc_url: "https://docs.ruby-lang.org/en/master/Thread.html"
+  tags: [gil, concurrency, threads, performance]
+
+- id: ruby-adv-005
+  version: "1"
+  topic: Ruby
+  subtopic: Metaprogramming
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this code do?"
+  code: |
+    class Product
+      ATTRS = [:name, :price, :category]
+
+      ATTRS.each do |attr|
+        define_method(attr) { instance_variable_get("@#{attr}") }
+        define_method("#{attr}=") { |val| instance_variable_set("@#{attr}", val) }
+      end
+    end
+
+    p = Product.new
+    p.name = "Widget"
+    puts p.name
+  options:
+    - id: a
+      text: "Raises NoMethodError because `name` and `name=` are not defined"
+      correct: false
+    - id: b
+      text: "Prints \"Widget\" — it dynamically defines getter and setter methods for each attribute"
+      correct: true
+    - id: c
+      text: "Creates a Struct with the given attributes"
+      correct: false
+    - id: d
+      text: "Raises a NameError because ATTRS is a constant"
+      correct: false
+  explanation: "`define_method` creates methods at runtime. This iterates over ATTRS and generates getter/setter pairs using `instance_variable_get`/`set`, effectively reimplementing `attr_accessor` dynamically — a common Ruby metaprogramming pattern."
+  doc_url: "https://ruby-doc.org/core/Module.html#method-i-define_method"
+  tags: [metaprogramming, define-method, dynamic-methods]
+
+- id: ruby-adv-006
+  version: "1"
+  topic: Ruby
+  subtopic: Frozen Objects
+  difficulty: advanced
+  type: multiple_choice
+  question: "Which statements about `freeze` in Ruby are true? (Select all that apply)"
+  options:
+    - id: a
+      text: "Calling `freeze` on an object makes it immutable — any modification raises a FrozenError"
+      correct: true
+    - id: b
+      text: "Frozen strings can be used to optimize memory when the same string is used repeatedly"
+      correct: true
+    - id: c
+      text: "You can unfreeze an object by calling `unfreeze` or `thaw`"
+      correct: false
+    - id: d
+      text: "The magic comment `# frozen_string_literal: true` freezes all string literals in the file"
+      correct: true
+  explanation: "Once frozen, an object cannot be modified or unfrozen. The `# frozen_string_literal: true` pragma freezes all string literals in a file, reducing object allocations. This is a common performance optimization and is the default in some style guides."
+  doc_url: "https://ruby-doc.org/core/Object.html#method-i-freeze"
+  tags: [freeze, immutability, performance, frozen-string-literal]
+
+- id: ruby-adv-007
+  version: "1"
+  topic: Ruby
+  subtopic: Eigenclass
+  difficulty: advanced
+  type: single_choice
+  question: "What is a singleton class (eigenclass) in Ruby?"
+  options:
+    - id: a
+      text: "A class that can only have one instance (Singleton pattern)"
+      correct: false
+    - id: b
+      text: "A hidden class unique to each object where singleton methods are stored"
+      correct: true
+    - id: c
+      text: "A class that has no superclass"
+      correct: false
+    - id: d
+      text: "A class defined inside another class"
+      correct: false
+  explanation: "Every Ruby object has a hidden singleton class (eigenclass) in its ancestor chain. Methods defined on a specific object (e.g., `def obj.my_method`) live in this singleton class. For classes, class methods are actually instance methods of the class's singleton class."
+  doc_url: "https://docs.ruby-lang.org/en/master/syntax/modules_and_classes_rdoc.html"
+  tags: [eigenclass, singleton-class, object-model]
+
+- id: ruby-adv-008
+  version: "1"
+  topic: Ruby
+  subtopic: Refinements
+  difficulty: advanced
+  type: code_snippet
+  question: "What does this code output?"
+  code: |
+    module StringExtras
+      refine String do
+        def shout
+          upcase + "!!!"
+        end
+      end
+    end
+
+    using StringExtras
+
+    puts "hello".shout
+  options:
+    - id: a
+      text: "NoMethodError — shout is not defined on String"
+      correct: false
+    - id: b
+      text: "HELLO!!!"
+      correct: true
+    - id: c
+      text: "hello!!!"
+      correct: false
+    - id: d
+      text: "SyntaxError"
+      correct: false
+  explanation: "Refinements provide a scoped way to monkey-patch classes. `refine String do ... end` adds methods that are only active after `using StringExtras` in the current file/module scope, avoiding global pollution of the String class."
+  doc_url: "https://docs.ruby-lang.org/en/master/syntax/refinements_rdoc.html"
+  tags: [refinements, monkey-patching, scoping]

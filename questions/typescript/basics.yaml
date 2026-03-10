@@ -1,0 +1,1123 @@
+- id: ts-basics-001
+  version: "1"
+  topic: TypeScript
+  subtopic: Basic Types
+  difficulty: beginner
+  type: single_choice
+  question: "What is the difference between `any` and `unknown` in TypeScript?"
+  options:
+    - id: a
+      text: "They are interchangeable aliases"
+      correct: false
+    - id: b
+      text: "`any` disables type checking; `unknown` requires a type check before usage"
+      correct: true
+    - id: c
+      text: "`unknown` is deprecated in favor of `any`"
+      correct: false
+    - id: d
+      text: "`any` only works with primitives; `unknown` works with all types"
+      correct: false
+  explanation: "`any` opts out of type checking entirely — you can do anything with it. `unknown` is the type-safe counterpart: you must narrow the type (e.g., with `typeof` or `instanceof`) before performing operations on it."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/types.html#unknown"
+  tags: [any, unknown, type-safety]
+
+- id: ts-basics-002
+  version: "1"
+  topic: TypeScript
+  subtopic: Interfaces
+  difficulty: beginner
+  type: single_choice
+  question: "What does the `readonly` modifier do on an interface property?"
+  options:
+    - id: a
+      text: "It makes the property optional"
+      correct: false
+    - id: b
+      text: "It prevents the property from being reassigned after the object is created"
+      correct: true
+    - id: c
+      text: "It hides the property from autocompletion"
+      correct: false
+    - id: d
+      text: "It makes the property accessible only within the class"
+      correct: false
+  explanation: "`readonly` prevents reassignment of a property after initialization. It does not make the object deeply immutable — nested objects can still be mutated unless they are also `readonly`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties"
+  tags: [readonly, interfaces, immutability]
+
+- id: ts-basics-003
+  version: "1"
+  topic: TypeScript
+  subtopic: Type Aliases vs Interfaces
+  difficulty: beginner
+  type: multiple_choice
+  question: "Which of the following are true about type aliases vs interfaces? (Select all that apply)"
+  options:
+    - id: a
+      text: "Interfaces can be extended with `extends`; type aliases use intersections (`&`)"
+      correct: true
+    - id: b
+      text: "Interfaces support declaration merging; type aliases do not"
+      correct: true
+    - id: c
+      text: "Type aliases can represent unions; interfaces cannot"
+      correct: true
+    - id: d
+      text: "Interfaces are always faster to compile than type aliases"
+      correct: false
+  explanation: "Interfaces support `extends` and declaration merging (multiple declarations with the same name are merged). Type aliases are more flexible — they can represent unions, intersections, mapped types, and primitives. Both can describe object shapes."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces"
+  tags: [type-alias, interface, declaration-merging]
+
+- id: ts-basics-004
+  version: "1"
+  topic: TypeScript
+  subtopic: Union Types
+  difficulty: beginner
+  type: code_snippet
+  question: "Does this code compile without errors?"
+  code: |
+    function format(value: string | number) {
+      return value.toFixed(2);
+    }
+  options:
+    - id: a
+      text: "Yes, it compiles fine"
+      correct: false
+    - id: b
+      text: "No — `toFixed` does not exist on type `string`"
+      correct: true
+    - id: c
+      text: "No — `toFixed` does not exist on type `number`"
+      correct: false
+    - id: d
+      text: "No — union types cannot be used as function parameters"
+      correct: false
+  explanation: "With a union type `string | number`, TypeScript only allows operations that are valid for every member of the union. `toFixed` exists on `number` but not on `string`, so you must narrow the type first (e.g., `if (typeof value === 'number')`)."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html"
+  tags: [union, narrowing, type-safety]
+
+- id: ts-basics-005
+  version: "1"
+  topic: TypeScript
+  subtopic: Enums
+  difficulty: beginner
+  type: single_choice
+  question: "What is the runtime value of `Direction.Right` in this enum?"
+  code: |
+    enum Direction {
+      Up,
+      Down,
+      Left,
+      Right,
+    }
+  options:
+    - id: a
+      text: '"Right"'
+      correct: false
+    - id: b
+      text: "3"
+      correct: true
+    - id: c
+      text: "4"
+      correct: false
+    - id: d
+      text: "undefined"
+      correct: false
+  explanation: "Numeric enums auto-increment from 0 by default. `Up = 0`, `Down = 1`, `Left = 2`, `Right = 3`. You can set a custom start value (e.g., `Up = 1`) and subsequent members will increment from there."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/enums.html"
+  tags: [enums, runtime]
+
+- id: ts-basics-006
+  version: "1"
+  topic: TypeScript
+  subtopic: Type Narrowing
+  difficulty: intermediate
+  type: single_choice
+  question: "Which technique does TypeScript use to narrow `unknown` to a specific type inside an `if` block?"
+  options:
+    - id: a
+      text: "Type erasure"
+      correct: false
+    - id: b
+      text: "Control flow analysis based on type guards"
+      correct: true
+    - id: c
+      text: "Runtime reflection via the Reflect API"
+      correct: false
+    - id: d
+      text: "Automatic casting with `as`"
+      correct: false
+  explanation: "TypeScript's control flow analysis tracks type guards (`typeof`, `instanceof`, `in`, user-defined type predicates) through conditional branches. After a guard, the type is narrowed in that scope — no explicit cast is needed."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html"
+  tags: [narrowing, type-guards, control-flow]
+
+- id: ts-basics-007
+  version: "1"
+  topic: TypeScript
+  subtopic: Generics
+  difficulty: intermediate
+  type: code_snippet
+  question: "What is the inferred return type of `first([10, 20, 30])`?"
+  code: |
+    function first<T>(arr: T[]): T | undefined {
+      return arr[0];
+    }
+
+    const result = first([10, 20, 30]);
+  options:
+    - id: a
+      text: "number"
+      correct: false
+    - id: b
+      text: "number | undefined"
+      correct: true
+    - id: c
+      text: "any"
+      correct: false
+    - id: d
+      text: "unknown"
+      correct: false
+  explanation: "TypeScript infers `T` as `number` from the argument `[10, 20, 30]`. The explicit return type `T | undefined` then resolves to `number | undefined`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
+  tags: [generics, inference, return-type]
+
+- id: ts-basics-008
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: single_choice
+  question: "What does `Partial<T>` do?"
+  options:
+    - id: a
+      text: "Makes all properties of T required"
+      correct: false
+    - id: b
+      text: "Makes all properties of T optional"
+      correct: true
+    - id: c
+      text: "Removes all methods from T"
+      correct: false
+    - id: d
+      text: "Makes all properties of T readonly"
+      correct: false
+  explanation: "`Partial<T>` constructs a type with all properties of `T` set to optional (`?`). It's commonly used for update operations where only some fields may be provided. The inverse is `Required<T>`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype"
+  tags: [utility-types, partial]
+
+- id: ts-basics-009
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type does `UserPreview` resolve to?"
+  code: |
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+      role: string;
+    }
+
+    type UserPreview = Pick<User, 'id' | 'name'>;
+  options:
+    - id: a
+      text: "{ id: number; name: string; email: string; role: string }"
+      correct: false
+    - id: b
+      text: "{ email: string; role: string }"
+      correct: false
+    - id: c
+      text: "{ id: number; name: string }"
+      correct: true
+    - id: d
+      text: "{ id: number }"
+      correct: false
+  explanation: "`Pick<T, K>` constructs a type by picking the specified set of keys `K` from `T`. Here it selects only `id` and `name`. The complement is `Omit<T, K>`, which removes the specified keys."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys"
+  tags: [utility-types, pick, omit]
+
+- id: ts-basics-010
+  version: "1"
+  topic: TypeScript
+  subtopic: Literal Types
+  difficulty: beginner
+  type: code_snippet
+  question: "Why does this code produce a type error?"
+  code: |
+    const config = { url: "https://api.example.com", method: "GET" };
+
+    declare function makeRequest(url: string, method: "GET" | "POST"): void;
+
+    makeRequest(config.url, config.method);
+  options:
+    - id: a
+      text: '`config.url` is not assignable to `string`'
+      correct: false
+    - id: b
+      text: '`config.method` is inferred as `string`, not `"GET" | "POST"`'
+      correct: true
+    - id: c
+      text: "`declare function` cannot be called directly"
+      correct: false
+    - id: d
+      text: "Object literals cannot be passed to declared functions"
+      correct: false
+  explanation: "Object properties declared with `const` are still widened to their base types — `config.method` is `string`, not the literal `\"GET\"`. Fix with `as const` on the object (`{ ... } as const`) or on the value (`method: \"GET\" as const`)."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types"
+  tags: [literal-types, as-const, widening]
+
+- id: ts-basics-011
+  version: "1"
+  topic: TypeScript
+  subtopic: Generics
+  difficulty: intermediate
+  type: single_choice
+  question: "What does a generic constraint like `<T extends { length: number }>` mean?"
+  options:
+    - id: a
+      text: "`T` must be exactly `{ length: number }`"
+      correct: false
+    - id: b
+      text: "`T` must be a subtype that has at least a `length` property of type `number`"
+      correct: true
+    - id: c
+      text: "`T` inherits from a class with a `length` field"
+      correct: false
+    - id: d
+      text: "`T` is restricted to arrays only"
+      correct: false
+  explanation: "Generic constraints with `extends` require `T` to be assignable to the constraint type. `T extends { length: number }` means `T` can be any type (string, array, custom object) as long as it has a numeric `length` property."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints"
+  tags: [generics, constraints, extends]
+
+- id: ts-basics-012
+  version: "1"
+  topic: TypeScript
+  subtopic: Type Assertions
+  difficulty: beginner
+  type: single_choice
+  question: "What does `as` do in `const input = document.getElementById('name') as HTMLInputElement`?"
+  options:
+    - id: a
+      text: "Performs a runtime type conversion"
+      correct: false
+    - id: b
+      text: "Tells the compiler to treat the value as the specified type without any runtime effect"
+      correct: true
+    - id: c
+      text: "Creates a new instance of `HTMLInputElement`"
+      correct: false
+    - id: d
+      text: "Validates the element type at runtime and throws if wrong"
+      correct: false
+  explanation: "Type assertions (`as Type`) are a compile-time hint — they produce no runtime code. They tell TypeScript you know more about the type than it can infer. Misuse can hide bugs since no runtime check is performed."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions"
+  tags: [type-assertion, as, compile-time]
+
+- id: ts-basics-013
+  version: "1"
+  topic: TypeScript
+  subtopic: Discriminated Unions
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type is `shape` narrowed to inside the `'circle'` case?"
+  code: |
+    type Circle = { kind: 'circle'; radius: number };
+    type Square = { kind: 'square'; side: number };
+    type Shape = Circle | Square;
+
+    function area(shape: Shape) {
+      switch (shape.kind) {
+        case 'circle':
+          return Math.PI * shape.radius ** 2;
+        case 'square':
+          return shape.side ** 2;
+      }
+    }
+  options:
+    - id: a
+      text: "Shape"
+      correct: false
+    - id: b
+      text: "Circle | Square"
+      correct: false
+    - id: c
+      text: "Circle"
+      correct: true
+    - id: d
+      text: "{ kind: string; radius: number }"
+      correct: false
+  explanation: "This is a discriminated union — each member has a common literal `kind` field. When you switch on `shape.kind`, TypeScript narrows `shape` to the matching member. In the `'circle'` case, `shape` is narrowed to `Circle`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions"
+  tags: [discriminated-unions, narrowing, pattern-matching]
+
+- id: ts-basics-014
+  version: "1"
+  topic: TypeScript
+  subtopic: Mapped Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What type does `ReadonlyUser` resolve to?"
+  code: |
+    type User = {
+      name: string;
+      age: number;
+    };
+
+    type ReadonlyUser = { readonly [K in keyof User]: User[K] };
+  options:
+    - id: a
+      text: "{ name: string; age: number }"
+      correct: false
+    - id: b
+      text: "{ readonly name: string; readonly age: number }"
+      correct: true
+    - id: c
+      text: "{ name: readonly string; age: readonly number }"
+      correct: false
+    - id: d
+      text: "Readonly<string | number>"
+      correct: false
+  explanation: "Mapped types iterate over the keys of a type with `[K in keyof T]`. Adding `readonly` before the key makes every property readonly. This is exactly what the built-in `Readonly<T>` utility type does."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html"
+  tags: [mapped-types, readonly, keyof]
+
+- id: ts-basics-015
+  version: "1"
+  topic: TypeScript
+  subtopic: Conditional Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What does `Result` resolve to?"
+  code: |
+    type IsString<T> = T extends string ? 'yes' : 'no';
+
+    type Result = IsString<'hello'>;
+  options:
+    - id: a
+      text: '"yes"'
+      correct: true
+    - id: b
+      text: '"no"'
+      correct: false
+    - id: c
+      text: '"yes" | "no"'
+      correct: false
+    - id: d
+      text: "boolean"
+      correct: false
+  explanation: "Conditional types follow the form `T extends U ? X : Y`. Since the literal type `'hello'` extends `string`, the condition is true and `Result` resolves to `'yes'`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+  tags: [conditional-types, extends, type-level]
+
+- id: ts-basics-016
+  version: "1"
+  topic: TypeScript
+  subtopic: never Type
+  difficulty: intermediate
+  type: single_choice
+  question: "When does TypeScript infer the `never` type?"
+  options:
+    - id: a
+      text: "When a variable has not been assigned yet"
+      correct: false
+    - id: b
+      text: "When a function returns `undefined`"
+      correct: false
+    - id: c
+      text: "When a function never returns (throws or has an infinite loop) or a type is narrowed to be impossible"
+      correct: true
+    - id: d
+      text: "When a variable is declared without a type annotation"
+      correct: false
+  explanation: "`never` represents values that never occur. Functions that always throw or loop forever return `never`. It also appears when narrowing exhausts all possibilities (e.g., the `default` branch of an exhaustive `switch`)."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type"
+  tags: [never, exhaustiveness, control-flow]
+
+- id: ts-basics-017
+  version: "1"
+  topic: TypeScript
+  subtopic: Intersection Types
+  difficulty: beginner
+  type: single_choice
+  question: "What does the intersection type `A & B` produce?"
+  options:
+    - id: a
+      text: "A type with only the properties common to both A and B"
+      correct: false
+    - id: b
+      text: "A type that has all properties from both A and B"
+      correct: true
+    - id: c
+      text: "A union of A or B"
+      correct: false
+    - id: d
+      text: "A type that is either A or B but not both"
+      correct: false
+  explanation: "Intersection types combine multiple types into one. `A & B` produces a type that has all members of both `A` and `B`. This is different from union (`A | B`), which is one or the other."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types"
+  tags: [intersection, type-composition]
+
+- id: ts-basics-018
+  version: "1"
+  topic: TypeScript
+  subtopic: Type Guards
+  difficulty: intermediate
+  type: code_snippet
+  question: "What does the return type `pet is Fish` mean in this function?"
+  code: |
+    type Fish = { swim: () => void };
+    type Bird = { fly: () => void };
+
+    function isFish(pet: Fish | Bird): pet is Fish {
+      return (pet as Fish).swim !== undefined;
+    }
+  options:
+    - id: a
+      text: "It's a boolean return type with an alias"
+      correct: false
+    - id: b
+      text: "It's a type predicate that narrows the parameter type in conditional branches"
+      correct: true
+    - id: c
+      text: "It asserts that `pet` is always `Fish` after the call"
+      correct: false
+    - id: d
+      text: "It throws an error at runtime if `pet` is not a `Fish`"
+      correct: false
+  explanation: "A type predicate `param is Type` is a special return type for type guard functions. When the function returns `true`, TypeScript narrows the parameter to the specified type in the calling scope's `if` branch."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates"
+  tags: [type-predicates, type-guards, narrowing]
+
+- id: ts-basics-019
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type does `EventPayload` resolve to?"
+  code: |
+    type Events = {
+      click: { x: number; y: number };
+      focus: { target: string };
+      blur: { target: string };
+    };
+
+    type EventPayload = Events[keyof Events];
+  options:
+    - id: a
+      text: '{ x: number; y: number } | { target: string }'
+      correct: true
+    - id: b
+      text: '{ x: number; y: number } & { target: string }'
+      correct: false
+    - id: c
+      text: '"click" | "focus" | "blur"'
+      correct: false
+    - id: d
+      text: '{ x: number; y: number; target: string }'
+      correct: false
+  explanation: "`keyof Events` is `'click' | 'focus' | 'blur'`. Indexing with a union of keys produces a union of the corresponding value types. Since `focus` and `blur` share the same shape, the result simplifies to `{ x: number; y: number } | { target: string }`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html"
+  tags: [indexed-access, keyof, lookup-types]
+
+- id: ts-basics-020
+  version: "1"
+  topic: TypeScript
+  subtopic: Strict Mode
+  difficulty: beginner
+  type: single_choice
+  question: "What does `strictNullChecks` do in `tsconfig.json`?"
+  options:
+    - id: a
+      text: "Prevents using `null` anywhere in the codebase"
+      correct: false
+    - id: b
+      text: "Makes `null` and `undefined` only assignable to their own types and `void`, not to every type"
+      correct: true
+    - id: c
+      text: "Automatically converts `null` to `undefined`"
+      correct: false
+    - id: d
+      text: "Removes `null` from all inferred types"
+      correct: false
+  explanation: "Without `strictNullChecks`, `null` and `undefined` are assignable to any type (e.g., you can assign `null` to a `string`). Enabling it makes them distinct types, catching a huge class of bugs at compile time."
+  doc_url: "https://www.typescriptlang.org/tsconfig/#strictNullChecks"
+  tags: [strict-mode, null-checks, tsconfig]
+
+- id: ts-basics-021
+  version: "1"
+  topic: TypeScript
+  subtopic: Tuple Types
+  difficulty: beginner
+  type: code_snippet
+  question: "What is the type of `pair`?"
+  code: |
+    const pair: [string, number] = ['age', 30];
+    const [label, value] = pair;
+  options:
+    - id: a
+      text: "`label` is `string | number`, `value` is `string | number`"
+      correct: false
+    - id: b
+      text: "`label` is `string`, `value` is `number`"
+      correct: true
+    - id: c
+      text: "`label` is `any`, `value` is `any`"
+      correct: false
+    - id: d
+      text: "The destructuring causes a type error"
+      correct: false
+  explanation: "Tuples are fixed-length arrays where each position has a specific type. Destructuring a `[string, number]` tuple gives the first element as `string` and the second as `number`, preserving positional type information."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types"
+  tags: [tuples, destructuring]
+
+- id: ts-basics-022
+  version: "1"
+  topic: TypeScript
+  subtopic: Template Literal Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What type does `EventName` resolve to?"
+  code: |
+    type Entity = 'user' | 'post';
+    type Action = 'create' | 'delete';
+
+    type EventName = `${Entity}_${Action}`;
+  options:
+    - id: a
+      text: "string"
+      correct: false
+    - id: b
+      text: '"user_create" | "user_delete" | "post_create" | "post_delete"'
+      correct: true
+    - id: c
+      text: '"user" | "post" | "create" | "delete"'
+      correct: false
+    - id: d
+      text: '"user_create"'
+      correct: false
+  explanation: "Template literal types compute the cartesian product of all union members. Each combination of `Entity` and `Action` produces one member, resulting in all four `\"entity_action\"` permutations."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html"
+  tags: [template-literal-types, string-manipulation, unions]
+
+- id: ts-basics-023
+  version: "1"
+  topic: TypeScript
+  subtopic: Function Overloads
+  difficulty: intermediate
+  type: code_snippet
+  question: "Which overload signature does TypeScript use when calling `parse(42)`?"
+  code: |
+    function parse(input: string): number;
+    function parse(input: number): string;
+    function parse(input: string | number): number | string {
+      if (typeof input === 'string') return Number(input);
+      return String(input);
+    }
+
+    const result = parse(42);
+  options:
+    - id: a
+      text: "The first overload — `result` is `number`"
+      correct: false
+    - id: b
+      text: "The second overload — `result` is `string`"
+      correct: true
+    - id: c
+      text: "The implementation signature — `result` is `number | string`"
+      correct: false
+    - id: d
+      text: "It causes a compile error because overloads are ambiguous"
+      correct: false
+  explanation: "TypeScript matches overloads top to bottom. `42` is a `number`, so the second overload `parse(input: number): string` matches. The implementation signature is not visible to callers — only the overload signatures are."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads"
+  tags: [overloads, functions, signatures]
+
+- id: ts-basics-024
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: single_choice
+  question: "What does `Record<string, number>` represent?"
+  options:
+    - id: a
+      text: "An array of numbers indexed by strings"
+      correct: false
+    - id: b
+      text: "An object type with string keys and number values"
+      correct: true
+    - id: c
+      text: "A Map with string keys and number values"
+      correct: false
+    - id: d
+      text: "A tuple of strings and numbers"
+      correct: false
+  explanation: "`Record<K, V>` constructs an object type whose keys are `K` and values are `V`. `Record<string, number>` is equivalent to `{ [key: string]: number }` — an index signature mapping any string key to a number value."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type"
+  tags: [utility-types, record, index-signature]
+
+- id: ts-basics-025
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type does `NonAdmin` resolve to?"
+  code: |
+    type Role = 'admin' | 'editor' | 'viewer';
+
+    type NonAdmin = Exclude<Role, 'admin'>;
+  options:
+    - id: a
+      text: '"admin"'
+      correct: false
+    - id: b
+      text: '"editor" | "viewer"'
+      correct: true
+    - id: c
+      text: '"admin" | "editor" | "viewer"'
+      correct: false
+    - id: d
+      text: "never"
+      correct: false
+  explanation: "`Exclude<T, U>` removes from `T` all members that are assignable to `U`. Here it strips `'admin'` from the union, leaving `'editor' | 'viewer'`. The inverse is `Extract<T, U>`, which keeps only matching members."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers"
+  tags: [utility-types, exclude, extract, unions]
+
+- id: ts-basics-026
+  version: "1"
+  topic: TypeScript
+  subtopic: Utility Types
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type does `Result` resolve to?"
+  code: |
+    function createUser(name: string, age: number) {
+      return { id: Math.random(), name, age };
+    }
+
+    type Result = ReturnType<typeof createUser>;
+  options:
+    - id: a
+      text: "{ name: string; age: number }"
+      correct: false
+    - id: b
+      text: "{ id: number; name: string; age: number }"
+      correct: true
+    - id: c
+      text: "void"
+      correct: false
+    - id: d
+      text: "typeof createUser"
+      correct: false
+  explanation: "`ReturnType<T>` extracts the return type of a function type. `typeof createUser` gets the function's type, and `ReturnType` then infers its return type: `{ id: number; name: string; age: number }`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype"
+  tags: [utility-types, return-type, typeof]
+
+- id: ts-basics-027
+  version: "1"
+  topic: TypeScript
+  subtopic: Infer Keyword
+  difficulty: advanced
+  type: code_snippet
+  question: "What type does `ItemType` resolve to?"
+  code: |
+    type UnpackArray<T> = T extends (infer U)[] ? U : T;
+
+    type ItemType = UnpackArray<string[]>;
+  options:
+    - id: a
+      text: "string[]"
+      correct: false
+    - id: b
+      text: "string"
+      correct: true
+    - id: c
+      text: "unknown"
+      correct: false
+    - id: d
+      text: "never"
+      correct: false
+  explanation: "The `infer` keyword declares a type variable inside a conditional type's `extends` clause. Here, if `T` matches `U[]`, TypeScript infers `U` from the array element type. `string[]` matches, so `U` is `string`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types"
+  tags: [infer, conditional-types, type-level]
+
+- id: ts-basics-028
+  version: "1"
+  topic: TypeScript
+  subtopic: Excess Property Checking
+  difficulty: beginner
+  type: code_snippet
+  question: "Why does this code produce a type error?"
+  code: |
+    interface Point {
+      x: number;
+      y: number;
+    }
+
+    const p: Point = { x: 1, y: 2, z: 3 };
+  options:
+    - id: a
+      text: "`Point` requires a `z` property"
+      correct: false
+    - id: b
+      text: "Object literals undergo excess property checking — `z` is not in `Point`"
+      correct: true
+    - id: c
+      text: "Interfaces cannot be used as variable types"
+      correct: false
+    - id: d
+      text: "`x`, `y`, and `z` must be strings"
+      correct: false
+  explanation: "When assigning an object literal directly to a typed variable, TypeScript performs excess property checking and flags properties not declared in the target type. This catches typos and unintended properties. Assigning via an intermediate variable bypasses this check."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks"
+  tags: [excess-property-checks, interfaces, object-literals]
+
+- id: ts-basics-029
+  version: "1"
+  topic: TypeScript
+  subtopic: Index Signatures
+  difficulty: intermediate
+  type: code_snippet
+  question: "What is the type of `value`?"
+  code: |
+    interface StringMap {
+      [key: string]: number;
+    }
+
+    const map: StringMap = { a: 1, b: 2 };
+    const value = map['c'];
+  options:
+    - id: a
+      text: "number"
+      correct: true
+    - id: b
+      text: "number | undefined"
+      correct: false
+    - id: c
+      text: "any"
+      correct: false
+    - id: d
+      text: "It causes a type error because `'c'` is not defined"
+      correct: false
+  explanation: "An index signature `[key: string]: number` tells TypeScript any string key returns `number`. By default, accessing a missing key is typed as `number` (not `undefined`). Enable `noUncheckedIndexedAccess` in tsconfig to get `number | undefined` instead."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures"
+  tags: [index-signatures, noUncheckedIndexedAccess]
+
+- id: ts-basics-030
+  version: "1"
+  topic: TypeScript
+  subtopic: satisfies Operator
+  difficulty: intermediate
+  type: code_snippet
+  question: "What is the advantage of `satisfies` over a type annotation here?"
+  code: |
+    type Colors = Record<string, [number, number, number] | string>;
+
+    const palette = {
+      red: [255, 0, 0],
+      green: '#00ff00',
+    } satisfies Colors;
+
+    const redChannel = palette.red[0];
+  options:
+    - id: a
+      text: "`satisfies` has no advantage — it is identical to a type annotation"
+      correct: false
+    - id: b
+      text: "It validates the type while preserving the narrower inferred type, so `palette.red` stays as a tuple"
+      correct: true
+    - id: c
+      text: "It makes the object immutable at runtime"
+      correct: false
+    - id: d
+      text: "It prevents adding new properties later"
+      correct: false
+  explanation: "A type annotation (`const palette: Colors = ...`) widens each value to `[number, number, number] | string`, losing specific type info. `satisfies` validates the value matches `Colors` but keeps the inferred type, so `palette.red` is still a tuple and `palette.red[0]` is `number`."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator"
+  tags: [satisfies, type-inference, validation]
+
+- id: ts-basics-031
+  version: "1"
+  topic: TypeScript
+  subtopic: Abstract Classes
+  difficulty: intermediate
+  type: single_choice
+  question: "What happens if you try to instantiate an abstract class directly with `new`?"
+  options:
+    - id: a
+      text: "It works fine and creates an instance with default values"
+      correct: false
+    - id: b
+      text: "TypeScript emits a compile-time error — abstract classes cannot be instantiated directly"
+      correct: true
+    - id: c
+      text: "It creates an instance but all abstract methods return `undefined`"
+      correct: false
+    - id: d
+      text: "It throws a runtime error but passes type checking"
+      correct: false
+  explanation: "Abstract classes serve as base classes that cannot be instantiated directly. They may contain abstract methods (no implementation) that subclasses must implement. TypeScript catches `new AbstractClass()` at compile time."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/classes.html#abstract-classes-and-members"
+  tags: [abstract, classes, inheritance]
+
+- id: ts-basics-032
+  version: "1"
+  topic: TypeScript
+  subtopic: Const Assertions
+  difficulty: intermediate
+  type: code_snippet
+  question: "What is the type of `config.method` after using `as const`?"
+  code: |
+    const config = {
+      url: 'https://api.example.com',
+      method: 'GET',
+    } as const;
+  options:
+    - id: a
+      text: "string"
+      correct: false
+    - id: b
+      text: '"GET"'
+      correct: true
+    - id: c
+      text: '"GET" | "POST"'
+      correct: false
+    - id: d
+      text: "Readonly<string>"
+      correct: false
+  explanation: "`as const` applies a deep readonly + literal type assertion. All properties become `readonly` and their values are narrowed to literal types. `config.method` is `\"GET\"` (not `string`), and the entire object is deeply immutable to the type checker."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions"
+  tags: [as-const, literal-types, readonly]
+
+- id: ts-basics-033
+  version: "1"
+  topic: TypeScript
+  subtopic: Declaration Files
+  difficulty: beginner
+  type: single_choice
+  question: "What is the purpose of `.d.ts` files?"
+  options:
+    - id: a
+      text: "They contain compiled JavaScript output"
+      correct: false
+    - id: b
+      text: "They provide type declarations without implementation, describing the shape of existing JS code"
+      correct: true
+    - id: c
+      text: "They are debug-mode TypeScript files that include source maps"
+      correct: false
+    - id: d
+      text: "They are automatically executed before the main entry point"
+      correct: false
+  explanation: "Declaration files (`.d.ts`) contain only type information — no runtime code. They allow TypeScript to understand the types of JavaScript libraries, ambient modules, or global variables. They're generated with `tsc --declaration` or written manually."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html"
+  tags: [declaration-files, d-ts, ambient]
+
+- id: ts-basics-034
+  version: "1"
+  topic: TypeScript
+  subtopic: Mapped Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What type does `Nullable` resolve to for `Nullable<{ a: string; b: number }>`?"
+  code: |
+    type Nullable<T> = { [K in keyof T]: T[K] | null };
+
+    type Result = Nullable<{ a: string; b: number }>;
+  options:
+    - id: a
+      text: "{ a: string; b: number } | null"
+      correct: false
+    - id: b
+      text: "{ a: string | null; b: number | null }"
+      correct: true
+    - id: c
+      text: "{ a: null; b: null }"
+      correct: false
+    - id: d
+      text: "null"
+      correct: false
+  explanation: "This mapped type iterates over each key `K` in `T` and produces a new type where each property's value is `T[K] | null`. It adds `null` as a possible value for every property individually, not to the whole object."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html"
+  tags: [mapped-types, nullable, type-level]
+
+- id: ts-basics-035
+  version: "1"
+  topic: TypeScript
+  subtopic: Awaited Type
+  difficulty: intermediate
+  type: code_snippet
+  question: "What type does `Data` resolve to?"
+  code: |
+    type Data = Awaited<Promise<Promise<string>>>;
+  options:
+    - id: a
+      text: "Promise<string>"
+      correct: false
+    - id: b
+      text: "Promise<Promise<string>>"
+      correct: false
+    - id: c
+      text: "string"
+      correct: true
+    - id: d
+      text: "unknown"
+      correct: false
+  explanation: "`Awaited<T>` recursively unwraps `Promise` types, mirroring how `await` works at runtime. Nested promises are flattened — `Promise<Promise<string>>` resolves to `string`, just like `await` would."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/utility-types.html#awaitedtype"
+  tags: [utility-types, awaited, promises, async]
+
+- id: ts-basics-036
+  version: "1"
+  topic: TypeScript
+  subtopic: Branded Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What problem does this branded type pattern solve?"
+  code: |
+    type USD = number & { __brand: 'USD' };
+    type EUR = number & { __brand: 'EUR' };
+
+    function addUSD(a: USD, b: USD): USD {
+      return (a + b) as USD;
+    }
+
+    const dollars = 100 as USD;
+    const euros = 50 as EUR;
+  options:
+    - id: a
+      text: "It converts currencies automatically at runtime"
+      correct: false
+    - id: b
+      text: "It prevents accidentally mixing incompatible numeric types at compile time"
+      correct: true
+    - id: c
+      text: "It improves performance by using specialized number types"
+      correct: false
+    - id: d
+      text: "It adds runtime validation for currency values"
+      correct: false
+  explanation: "Branded (or nominal) types use intersection with a phantom property to create distinct types from the same base type. `USD` and `EUR` are both `number` at runtime, but TypeScript treats them as incompatible — `addUSD(dollars, euros)` is a compile error."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/types.html"
+  tags: [branded-types, nominal-typing, phantom-types]
+
+- id: ts-basics-037
+  version: "1"
+  topic: TypeScript
+  subtopic: Variadic Tuple Types
+  difficulty: advanced
+  type: code_snippet
+  question: "What is the return type of `concat(['a', 'b'], [1, 2])`?"
+  code: |
+    function concat<T extends unknown[], U extends unknown[]>(
+      a: [...T],
+      b: [...U]
+    ): [...T, ...U] {
+      return [...a, ...b];
+    }
+
+    const result = concat(['a', 'b'], [1, 2]);
+  options:
+    - id: a
+      text: "(string | number)[]"
+      correct: false
+    - id: b
+      text: "[string, string, number, number]"
+      correct: true
+    - id: c
+      text: "[string[], number[]]"
+      correct: false
+    - id: d
+      text: "unknown[]"
+      correct: false
+  explanation: "Variadic tuple types allow spreading generic tuple types. TypeScript infers `T` as `[string, string]` and `U` as `[number, number]`, then computes the return as `[...T, ...U]` = `[string, string, number, number]`, preserving element positions."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#variadic-tuple-types"
+  tags: [variadic-tuples, generics, spread]
+
+- id: ts-basics-038
+  version: "1"
+  topic: TypeScript
+  subtopic: Narrowing
+  difficulty: beginner
+  type: code_snippet
+  question: "What does the `in` operator narrow in this code?"
+  code: |
+    type Dog = { bark: () => void };
+    type Cat = { meow: () => void };
+
+    function speak(pet: Dog | Cat) {
+      if ('bark' in pet) {
+        pet.bark();
+      }
+    }
+  options:
+    - id: a
+      text: "`pet` is narrowed to `Dog` inside the `if` block"
+      correct: true
+    - id: b
+      text: "`pet` stays as `Dog | Cat` — `in` does not narrow types"
+      correct: false
+    - id: c
+      text: "`pet` is narrowed to `Cat` inside the `if` block"
+      correct: false
+    - id: d
+      text: "The code does not compile because `in` only works with strings"
+      correct: false
+  explanation: "The `in` operator is a type guard in TypeScript. Checking `'bark' in pet` narrows `pet` to the union member that contains a `bark` property — in this case, `Dog`. It's especially useful for discriminating types without a shared literal field."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing"
+  tags: [narrowing, in-operator, type-guards]
+
+- id: ts-basics-039
+  version: "1"
+  topic: TypeScript
+  subtopic: Enums
+  difficulty: intermediate
+  type: single_choice
+  question: "How does a `const enum` differ from a regular `enum`?"
+  options:
+    - id: a
+      text: "They are identical — `const` is purely cosmetic"
+      correct: false
+    - id: b
+      text: "`const enum` members are inlined at compile time and no runtime object is emitted"
+      correct: true
+    - id: c
+      text: "`const enum` values cannot be numbers"
+      correct: false
+    - id: d
+      text: "`const enum` creates a frozen object at runtime"
+      correct: false
+  explanation: "A `const enum` is fully erased at compile time — every usage is replaced with the literal value inline. No `Direction` object exists at runtime. This reduces bundle size but prevents runtime iteration over enum members or reverse mapping."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/enums.html#const-enums"
+  tags: [const-enum, enums, compilation]
+
+- id: ts-basics-040
+  version: "1"
+  topic: TypeScript
+  subtopic: Modules
+  difficulty: beginner
+  type: single_choice
+  question: "What does `import type { User } from './models'` do differently than a regular import?"
+  options:
+    - id: a
+      text: "It imports `User` as a mutable reference"
+      correct: false
+    - id: b
+      text: "It imports only the type and guarantees the import is erased from the JS output"
+      correct: true
+    - id: c
+      text: "It imports `User` synchronously instead of asynchronously"
+      correct: false
+    - id: d
+      text: "It makes `User` available globally without needing to import it elsewhere"
+      correct: false
+  explanation: "`import type` is a type-only import that is completely removed during compilation. It prevents accidentally importing runtime code when you only need the type, and ensures no side effects from the imported module are triggered."
+  doc_url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export"
+  tags: [import-type, modules, erasure]
