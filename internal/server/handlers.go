@@ -204,6 +204,8 @@ func langClass(topic string) string {
 		return "language-javascript"
 	case "Python":
 		return "language-python"
+	case "AWS":
+		return "language-json"
 	default:
 		return "language-elixir"
 	}

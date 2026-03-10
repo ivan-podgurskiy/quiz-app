@@ -123,3 +123,40 @@ func TestSelectQuestions_CountCap(t *testing.T) {
 		t.Errorf("expected 5 questions (count cap), got %d", len(selected))
 	}
 }
+
+// orderSignature returns a string of question IDs in order, for comparing runs.
+func orderSignature(qs []question.Question) string {
+	ids := make([]byte, 0, len(qs)*4)
+	for _, q := range qs {
+		ids = append(ids, q.ID...)
+	}
+	return string(ids)
+}
+
+// TestSelectQuestions_OrderRotatesAcrossRuns verifies that question order varies
+// between runs. That order is the display order (session.Questions), so the same
+// quiz config does not always show questions in the same order each run.
+func TestSelectQuestions_OrderRotatesAcrossRuns(t *testing.T) {
+	all := []question.Question{
+		makeQuestion("q1", "Elixir", "beginner"),
+		makeQuestion("q2", "Elixir", "beginner"),
+		makeQuestion("q3", "Elixir", "beginner"),
+		makeQuestion("q4", "Elixir", "beginner"),
+		makeQuestion("q5", "Elixir", "beginner"),
+	}
+	store := make(Store)
+	today := time.Now()
+
+	seen := make(map[string]bool)
+	for i := 0; i < 30; i++ {
+		selected := SelectQuestions(all, store, 5, nil, "", today)
+		if len(selected) != 5 {
+			t.Fatalf("run %d: expected 5 questions, got %d", i, len(selected))
+		}
+		seen[orderSignature(selected)] = true
+	}
+	if len(seen) < 2 {
+		t.Errorf("expected at least 2 different question orderings across 30 runs, got %d; questions should be rotated each run",
+			len(seen))
+	}
+}

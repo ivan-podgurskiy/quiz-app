@@ -76,6 +76,67 @@ func TestStore_ShuffledOpts(t *testing.T) {
 	}
 }
 
+// optionOrderSignature returns the display order of option IDs so we can detect
+// when the same question shows options in a different order (different visual position).
+func optionOrderSignature(opts []question.Option) string {
+	s := make([]byte, 0, len(opts)*2)
+	for _, o := range opts {
+		s = append(s, o.ID...)
+	}
+	return string(s)
+}
+
+// TestStore_OptionOrderRotatesAcrossSessions verifies that the order of answer options
+// (and thus the visual position of the correct answer) varies between sessions, so users
+// cannot rely on remembering "the answer was always the second option".
+func TestStore_OptionOrderRotatesAcrossSessions(t *testing.T) {
+	// Question with 4 options so shuffle can produce many orderings.
+	q := question.Question{
+		ID:   "q1",
+		Type: question.SingleChoice,
+		Options: []question.Option{
+			{ID: "a", Text: "A", Correct: true},
+			{ID: "b", Text: "B", Correct: false},
+			{ID: "c", Text: "C", Correct: false},
+			{ID: "d", Text: "D", Correct: false},
+		},
+	}
+	store := NewStore()
+	seen := make(map[string]bool)
+	for i := 0; i < 30; i++ {
+		sess := store.Create([]question.Question{q})
+		opts := sess.ShuffledOpts[q.ID]
+		if len(opts) != 4 {
+			t.Fatalf("session %d: expected 4 options, got %d", i, len(opts))
+		}
+		seen[optionOrderSignature(opts)] = true
+	}
+	if len(seen) < 2 {
+		t.Errorf("expected at least 2 different option orderings across 30 sessions (correct answer should not always be in the same place), got %d",
+			len(seen))
+	}
+}
+
+// TestStore_DisplayOrderPreserved verifies that the order of questions in the session
+// is the display order shown to the user, and that different runs can have different display orders.
+func TestStore_DisplayOrderPreserved(t *testing.T) {
+	store := NewStore()
+	q1, q2, q3 := makeQ("q1"), makeQ("q2"), makeQ("q3")
+
+	// Simulate two quiz runs with different orderings (e.g. from SelectQuestions).
+	orderA := []question.Question{q1, q2, q3}
+	orderB := []question.Question{q2, q1, q3}
+
+	sessA := store.Create(orderA)
+	sessB := store.Create(orderB)
+
+	// Display order is sess.Questions[CurrentIndex]; first question shown must match input order.
+	if sessA.Questions[0].ID != "q1" || sessB.Questions[0].ID != "q2" {
+		t.Errorf("display order not preserved: sessA first=%s (want q1), sessB first=%s (want q2)",
+			sessA.Questions[0].ID, sessB.Questions[0].ID)
+	}
+}
+
 func TestStore_UniqueIDs(t *testing.T) {
 	store := NewStore()
 	ids := map[string]bool{}
